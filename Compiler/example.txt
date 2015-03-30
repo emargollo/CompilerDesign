@@ -16,7 +16,7 @@ class Utility
 		};
 		return (maxValue);
 	};
-	int findMin(int array[100])
+	int findMin(int array[100], float test)
 	{
 		int minValue;
 		int idx;

@@ -38,7 +38,7 @@ Parser::parse (std::string fileName, bool output)
     myfile << mSs.str();
     myfile.close();
   }
-  mTableHead.print();
+  std::cout<<mTableHead.print();
   return success;
 }
 
@@ -128,6 +128,7 @@ Parser::classDecl ()
       mCurrentEntry->setLink(cl);	//Links Entry to new Table
       mCurrentEntry->setType(mLookAhead.getLexeme());
       mCurrentEntry->setStructure(structure::Class);
+      mCurrentEntry->setKind(kind::Class);
 
       if(match(Id_Class)){
 	  mCurrentEntry->setName(mLookAhead.getLexeme());
@@ -1040,12 +1041,24 @@ Parser::fParamsTail ()
   bool success = skipErrors(rule::fParamsTail);
   if(first(Com))
   {
-      if(match(Com) && type() && match(Id) && arraySizex())
+      if(match(Com) )
       {
-	  mSs<< "<fParamsTail> -> ,<type>id<arraySize*>" <<std::endl;
+	  mCurrentTable->insert("param", mCurrentEntry);
+	  mFunctionEntry->addParameter(mLookAhead.getLexeme());
+	  mCurrentEntry->setType(mLookAhead.getLexeme());
+	  mCurrentEntry->setKind(kind::Parameter);
+	  mCurrentEntry->setStructure(structure::Simple);
+	  if( type() )
+	  {
+	    mCurrentEntry->setName(mLookAhead.getLexeme());
+	    if( match(Id) && arraySizex())
+	    {
+		mSs<< "<fParamsTail> -> ,<type>id<arraySize*>" <<std::endl;
 
+	    }
+	    else{success = false;}
+	  }
       }
-      else{success = false;}
   }
   else{success = false;}
   return(success);

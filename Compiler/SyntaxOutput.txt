@@ -327,7 +327,14 @@ array
 <arraySize> -> [ num(int) ]
 <arraySize*> -> epsilon
 <arraySize*> -> <arraySize><arraySize*> 
+,
+float
+<type> -> float
+test
+<arraySize*> -> epsilon
+<fParamsTail> -> ,<type>id<arraySize*>
 <fParamsTail*> -> epsilon
+<fParamsTail*> -> <fParamsTail><fParamsTail*> 
 <fParams> -> <type>id<arraySize*><fParamsTail*>
 )
 {

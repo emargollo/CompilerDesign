@@ -9,15 +9,8 @@
 #define TABLEENTRY_H_
 
 #include "SymbolTable.h"
+#include "sstream"
 
-namespace type{
-  typedef enum type{
-    Integer,
-    Float,
-    Class,
-    Other
-  }type;
-}
 namespace kind{
   typedef enum kind{
     Variable,
@@ -74,6 +67,10 @@ private:
   int				mAddress;
   SymbolTable* 			mLink;
 
+  std::string			kindToString(kind::kind);
+  std::string			strucToString(structure::structure);
+  std::string			printParams();
+  std::string			printDimensions();
 };
 
 #endif /* TABLEENTRY_H_ */

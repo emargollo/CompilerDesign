@@ -132,5 +132,84 @@ TableEntry::getType ()
 std::string
 TableEntry::toString()
 {
-  return mName;
+  std::stringstream ss;
+  ss<<"Entry: [Name: "<<mName<<", Type:"<<mType <<", Kind: "<<kindToString(mKind)<<", Structure: "<<strucToString(mStructure)
+      <<", Parameters: [" << printParams() << "], Dimensions: " << printDimensions()<< ", Link: ";
+  if(mLink != NULL)
+  {
+      ss<<mLink->getName();
+  }
+  else
+  {
+      ss<<"-";
+  }
+  ss<<"]";
+  return ss.str();
+}
+
+std::string
+TableEntry::kindToString (kind::kind k)
+{
+  using namespace kind;
+  switch (k) {
+    case Class:
+      return "Class";
+      break;
+    case Function:
+      return "Function";
+      break;
+    case Parameter:
+      return "Parameter";
+      break;
+    case Variable:
+      return "Variable";
+      break;
+    default:
+      return "...";
+      break;
+  }
+}
+
+std::string
+TableEntry::strucToString (structure::structure	s)
+{
+  using namespace structure;
+  switch (s) {
+    case Simple:
+      return "Simple";
+      break;
+    case Array:
+      return "Array";
+      break;
+    case Class:
+      return "Class";
+      break;
+    default:
+      return "...";
+      break;
+  }
+}
+
+std::string
+TableEntry::printParams ()
+{
+  std::stringstream ss;
+  ss<<" ";
+  for(int i = 0; i < mParameters.size(); i++)
+  {
+      ss<<mParameters.at(i) << ", ";
+  }
+  return ss.str();
+}
+
+std::string
+TableEntry::printDimensions ()
+{
+  std::stringstream ss;
+  ss<<" ";
+  for(int i = 0; i < mDimension.size(); i++)
+  {
+      ss<<"["<< mDimension.at(i) << "], ";
+  }
+  return ss.str();
 }

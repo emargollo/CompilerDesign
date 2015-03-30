@@ -25,7 +25,7 @@ public:
   void				search(std::string identifier, TableEntry *&ptr, bool &found);
   void				insert(std::string identifier, TableEntry *&ptr);
   void				deleteTable();
-  void				print();
+  std::string			print();
 
   SymbolTable*			getPreviousTable();
   std::vector<TableEntry*>	getEntries();

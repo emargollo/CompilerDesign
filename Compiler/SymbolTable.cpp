@@ -73,22 +73,25 @@ SymbolTable::deleteTable ()
   this->~SymbolTable();
 }
 
-void
+std::string
 SymbolTable::print ()
 {
-  std::cout<<"Table: "<<mName<<std::endl;
+  std::stringstream ss;
+  ss<<"Table: "<<mName<<"{"<<std::endl;
   std::vector<SymbolTable*> vs;
   for(unsigned int i = 0; i < mEntries.size(); i++)
   {
-     std::cout<< mEntries.at(i)->toString()<<std::endl;
+     ss<< mEntries.at(i)->toString()<<std::endl;
      if(mEntries.at(i)->getLink() != NULL)
        vs.push_back(mEntries.at(i)->getLink());
   }
-  std::cout<<std::endl;
+  ss<<"}";
+  ss<<std::endl;
   for(unsigned int i = 0; i < vs.size(); i++)
   {
-      vs.at(i)->print();
+      ss<<vs.at(i)->print();
   }
+  return ss.str();
 }
 
 
