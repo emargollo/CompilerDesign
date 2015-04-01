@@ -48,34 +48,16 @@ Driver::runDriver (bool toFile, bool errorFile)
   }
   tkFile.close();
   erFile.close();*/
-  bool t3 = mParser.parse("example.txt", true);	//Driver to run parser.
-  //std::cout<<t3<<std::endl;
-
-  TableEntry *t, *t2, *t4;
+  bool t = mParser.parse("example.txt", true);	//Driver to run parser.
+  std::cout<<t<<std::endl;
   mSymbolTable = SymbolTable("Global", NULL);
-
-
-/*
-  mSymbolTable.insert("test", t);
-  t->addDimension(2);
-  t->addDimension(3);
-  std::cout<<t->getName()<<std::endl;
-
-  t->setName("test2");
-  std::cout<<t->getDimensions()<<std::endl;
-  bool f;
-
-  mSymbolTable.search("test2", t2, f);
-  if(f)
-    std::cout<<t2->getDimensions()<<std::endl;
-  mSymbolTable.insert("test", t4);*/
-  //mSymbolTable.print();
 
 }
 
 int main(int argc, char **argv) {
   Driver d;
   d.runDriver(true, true);
+  std::cin.get();
 }
 
 

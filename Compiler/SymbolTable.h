@@ -26,6 +26,7 @@ public:
   void				insert(std::string identifier, TableEntry *&ptr);
   void				deleteTable();
   std::string			print();
+  bool				dualEntrySearch();
 
   SymbolTable*			getPreviousTable();
   std::vector<TableEntry*>	getEntries();

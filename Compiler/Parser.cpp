@@ -37,6 +37,13 @@ Parser::parse (std::string fileName, bool output)
     myfile.open ("SyntaxOutput.txt");
     myfile << mSs.str();
     myfile.close();
+    myfile.open("SymbolTables.txt");
+    myfile<<mTableHead.print();
+    myfile.close();
+  }
+  if(success)
+  {
+      success = mTableHead.dualEntrySearch();
   }
   std::cout<<mTableHead.print();
   return success;

@@ -5,7 +5,7 @@ class Utility
 	int findMax(int array[100])
 	{
 		int maxValue;
-		int idx;	
+		int idx;
 		maxValue = array[100];
 		a = b;
 		for( int idx = 99; idx > 0; idx = idx - 1 )
