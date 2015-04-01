@@ -127,9 +127,8 @@ Parser::classDecl ()
   bool success = skipErrors(rule::classDecl);
   if(first(Id_Class))
   {
-      SymbolTable *cl = new SymbolTable("new", mCurrentTable);	//Create class table
+      SymbolTable *cl = new SymbolTable("class", mCurrentTable);	//Create class table
       mCurrentTable->insert("class", mCurrentEntry);		//Enter class entry in table
-      //mSymbolTables.push_back(cl);
       mCurrentTable = cl;		//Enter new Table
 
       mCurrentEntry->setLink(cl);	//Links Entry to new Table
@@ -244,7 +243,6 @@ Parser::varFunc ()
       if(match(Opar) && fParams() && match(Cpar) && funcBody() && match(Semic))
       {
 	mSs<< "<varFunc> -> ( <fParams> ) <funcBody>;"<<std::endl;
-	mCurrentTable = mCurrentTable->getPreviousTable();
       }
 
       else{success = false;}
@@ -268,7 +266,6 @@ Parser::progBody ()
       mCurrentEntry->setLink(pt);
       mCurrentTable = pt;
       if(match(Id_Program) && funcBody() && match(Semic) ){
-	  mCurrentTable = mCurrentTable->getPreviousTable();
 	  if(funcDefx())
 	  {
 	      mSs<< "<progBody> -> program<funcBody>;<funcDef*>" << std::endl;
@@ -359,6 +356,7 @@ Parser::funcBody ()
   {
       if(match(Okey) && varDeclx() && statementx() && match(Ckey))
       {
+	  mCurrentTable = mCurrentTable->getPreviousTable();//Exit Method/Program/Function Tables
 	  mSs<< "<funcBody> -> {<varDecl*><statement*>}"<<std::endl;
 
       }

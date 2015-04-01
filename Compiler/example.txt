@@ -57,3 +57,10 @@ float randomize()
 	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
 	return (value);
 }; 
+float randomize2()
+{
+	float value;
+	value = 100 * (2 + 3.0 / 7.0006);
+	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
+	return (value);
+}; 

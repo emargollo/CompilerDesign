@@ -1287,7 +1287,146 @@ value
 <funcBody> -> {<varDecl*><statement*>}
 ;
 <funcDef> -> <funcHead><funcBody>;
+float
+<type> -> float
+randomize2
+(
+<fParams> -> epsilon
+)
+<funcHead>	-> <type>id(<fParams>)
+{
+float
+<type> -> float
+value
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+100
+<factor> -> num
+*
+<multOp> -> *
+(
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+3.0
+<factor>	-> num
+/
+<multOp> -> /
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+1.05
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+(
+(
+2.04
+<factor>	-> num
+*
+<multOp> -> *
+2.47
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
+-
+<addOp> -> -
+3.0
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+return
+(
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<funcDef> -> <funcHead><funcBody>;
 <funcDef*> -> epsilon
+<funcDef*> -> <funcDef><funcDef*> 
 <funcDef*> -> <funcDef><funcDef*> 
 <progBody> -> program<funcBody>;<funcDef*>
 <prog> -> <classDecl*><progBody>
