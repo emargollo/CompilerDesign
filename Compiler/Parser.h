@@ -84,13 +84,14 @@ private:
   Token				mPeek;
   LexicalAnalyzer 		mLex;
   std::stringstream		mSs;
+  std::stringstream		mTs;
   SymbolTable			mTableHead;
 
   SymbolTable*			mCurrentTable;
   TableEntry*			mFunctionEntry;
   TableEntry*			mCurrentEntry;
 
-
+  void		addTokenToStream();
 
   bool		prog();
   bool		classDeclx();

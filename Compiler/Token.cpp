@@ -53,7 +53,7 @@ Token::toString ()
 {
   std::stringstream os;
   std::string s;
-  os << "Type: " << typeToString(mTokenType) << ". Lexeme: \"" << mLexeme << "\" Location on file: " << mPos<<std::endl;
+  os << "Type: " << typeToString(mTokenType) << ". Lexeme: \"" << mLexeme << "\" Location on file: " << mPos;
   s = os.str();
   return s;
 }

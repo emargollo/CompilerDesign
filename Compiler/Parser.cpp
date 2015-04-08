@@ -17,6 +17,12 @@ Parser::~Parser ()
   // TODO Auto-generated destructor stub
 }
 
+void
+Parser::addTokenToStream()
+{
+  mTs << "Token: [ " << mLookAhead.toString() << " ]\n";
+}
+
 bool
 Parser::parse (std::string fileName, bool output)
 {
@@ -24,6 +30,7 @@ Parser::parse (std::string fileName, bool output)
   mLex.setFile(fileName);
   mPeek = mLex.nextToken();
   mLookAhead = mPeek;
+  addTokenToStream();
   mPeek = mLex.nextToken();
   if(prog() && match(Eof))
   {
@@ -34,6 +41,9 @@ Parser::parse (std::string fileName, bool output)
   //std::cout<<mSs.str()<<std::endl;
   if(output){
     std::ofstream myfile;
+    myfile.open("LexicalOutput");
+    myfile << mTs.str();
+    myfile.close();
     myfile.open ("SyntaxOutput.txt");
     myfile << mSs.str();
     myfile.close();
@@ -56,11 +66,13 @@ Parser::match (Token_Type tk)
   {
       mSs<<mLookAhead.getLexeme()<<std::endl;
       mLookAhead = mPeek;
+      addTokenToStream();
       mPeek = mLex.nextToken();
       while(mLookAhead.getTokenType() == Comm || mLookAhead.getTokenType() == Fcom)
       {
 	  mSs<<mLookAhead.getLexeme()<<std::endl;
 	  mLookAhead = mPeek;
+	  addTokenToStream();
 	  mPeek = mLex.nextToken();
       }
       return true;
@@ -73,6 +85,7 @@ Parser::match (Token_Type tk)
   {
 	  mSs<<mLookAhead.getLexeme()<<std::endl;
 	  mLookAhead = mPeek;
+	  addTokenToStream();
 	  mPeek = mLex.nextToken();
   }
   return false;
