@@ -32,6 +32,7 @@ Parser::parse (std::string fileName, bool output)
   mLookAhead = mPeek;
   addTokenToStream();
   mPeek = mLex.nextToken();
+  mCurrentTable = NULL;
   if(prog() && match(Eof))
   {
       success = true;
@@ -48,14 +49,14 @@ Parser::parse (std::string fileName, bool output)
     myfile << mSs.str();
     myfile.close();
     myfile.open("SymbolTables.txt");
-    myfile<<mTableHead.print();
+    myfile<<mTableHead->print();
     myfile.close();
   }
   if(success)
   {
-      success = mTableHead.dualEntrySearch();
+      success = mTableHead->dualEntrySearch();
   }
-  std::cout<<mTableHead.print();
+  std::cout<<mTableHead->print();
   return success;
 }
 
@@ -77,10 +78,12 @@ Parser::match (Token_Type tk)
       }
       return true;
   }
+
   mSs<<"Syntax error at " <<mLookAhead.getPos()<<" Expected "<< mLookAhead.typeToString(tk)
       <<" Recieved "<< mLookAhead.typeToString(mLookAhead.getTokenType())  <<" Instead."<<std::endl;
   mLookAhead = mPeek;
   mPeek = mLex.nextToken();
+
   while(mLookAhead.getTokenType() == Comm || mLookAhead.getTokenType() == Fcom)
   {
 	  mSs<<mLookAhead.getLexeme()<<std::endl;
@@ -91,15 +94,21 @@ Parser::match (Token_Type tk)
   return false;
 }
 
+void
+Parser::createTable(std::string name)
+{
+  SymbolTable *t = new SymbolTable(name, mCurrentTable);
+  mCurrentTable = t;
+}
+
 bool
 Parser::prog ()
 {
   bool success = skipErrors(rule::prog);
   if(first(rule::classDeclx))
   {
-      SymbolTable global("Global", NULL);
-      mTableHead = global;
-      mCurrentTable = &mTableHead;
+      createTable("Global");
+      mTableHead = mCurrentTable;
       if(classDeclx() && progBody())
       {
 	  mSs<<"<prog> -> <classDecl*><progBody>"<<std::endl;
@@ -140,11 +149,10 @@ Parser::classDecl ()
   bool success = skipErrors(rule::classDecl);
   if(first(Id_Class))
   {
-      SymbolTable *cl = new SymbolTable("class", mCurrentTable);	//Create class table
       mCurrentTable->insert("class", mCurrentEntry);		//Enter class entry in table
-      mCurrentTable = cl;		//Enter new Table
+      createTable("class");	//Create and enter new Table
 
-      mCurrentEntry->setLink(cl);	//Links Entry to new Table
+      mCurrentEntry->setLink(mCurrentTable);	//Links Entry to new Table
       mCurrentEntry->setType(mLookAhead.getLexeme());
       mCurrentEntry->setStructure(structure::Class);
       mCurrentEntry->setKind(kind::Class);
@@ -211,13 +219,15 @@ Parser::typeDef ()
 
   if(first(rule::type))
   {
+      std::string typeDefTC;
       mCurrentTable->insert("variable/function", mCurrentEntry);		//Enter class entry in table
-      mCurrentEntry->setType(mLookAhead.getLexeme());
+      //mCurrentEntry->setType(mLookAhead.getLexeme());
 
-      if(type()){
+      if(type(typeDefTC)){
 	  mCurrentEntry->setName(mLookAhead.getLexeme());
 	  if(match(Id))
 	  {
+	      mCurrentEntry->setType(typeDefTC);
 	      mSs<< "<typeDef> -> <type>id"<<std::endl;
 
 	  }
@@ -246,13 +256,13 @@ Parser::varFunc ()
   }
   else if(first(Opar))
   {
-      SymbolTable *ft = new SymbolTable(std::string(mCurrentTable->getName() + ":" + mCurrentEntry->getName()), mCurrentTable);
+      createTable(std::string(mCurrentTable->getName() + ":" + mCurrentEntry->getName()));
+
       mCurrentEntry->setKind(kind::Function);
       mCurrentEntry->setStructure(structure::Simple);
-      mCurrentEntry->setLink(ft);
+      mCurrentEntry->setLink(mCurrentTable);
 
       mFunctionEntry = mCurrentEntry;
-      mCurrentTable = ft;
       if(match(Opar) && fParams() && match(Cpar) && funcBody() && match(Semic))
       {
 	mSs<< "<varFunc> -> ( <fParams> ) <funcBody>;"<<std::endl;
@@ -270,14 +280,14 @@ Parser::progBody ()
   bool success = skipErrors(rule::progBody);
   if(first(Id_Program))
   {
-      SymbolTable *pt = new SymbolTable("Program", mCurrentTable);
-
       mCurrentTable->insert("Program", mCurrentEntry);
+
+      createTable("Program");
+
       mCurrentEntry->setKind(kind::Function);
       mCurrentEntry->setStructure(structure::Simple);
       mCurrentEntry->setType(mLookAhead.getLexeme());
-      mCurrentEntry->setLink(pt);
-      mCurrentTable = pt;
+      mCurrentEntry->setLink(mCurrentTable);
       if(match(Id_Program) && funcBody() && match(Semic) ){
 	  if(funcDefx())
 	  {
@@ -337,14 +347,18 @@ Parser::funcHead ()
   bool success = skipErrors(rule::funcHead);
   if(first(rule::type))
   {
-      SymbolTable *ft = new SymbolTable("Function", mCurrentTable);
+      std::string funcHeadTC;
+
       mCurrentTable->insert("func", mCurrentEntry);
+
+      createTable("Function");
+
       mCurrentEntry->setStructure(structure::Simple);
       mCurrentEntry->setKind(kind::Function);
-      mCurrentEntry->setType(mLookAhead.getLexeme());
-      mCurrentEntry->setLink(ft);
-      mCurrentTable = ft;
-      if(type()){
+      //mCurrentEntry->setType(mLookAhead.getLexeme());
+      mCurrentEntry->setLink(mCurrentTable);
+      if(type(funcHeadTC)){
+	  mCurrentEntry->setType(funcHeadTC);
 	  mCurrentTable->setName(mLookAhead.getLexeme());
 	  mCurrentEntry->setName(mLookAhead.getLexeme());
 	  mFunctionEntry = mCurrentEntry;
@@ -407,11 +421,13 @@ Parser::varDecl ()
   bool success = skipErrors(rule::varDecl);
   if(first(rule::type))
   {
+      std::string varDeclTC;
       mCurrentTable->insert("variable", mCurrentEntry);
-      mCurrentEntry->setType(mLookAhead.getLexeme());
+      //mCurrentEntry->setType(mLookAhead.getLexeme());
       mCurrentEntry->setKind(kind::Variable);
       mCurrentEntry->setStructure(structure::Simple);
-      if(type() ){
+      if(type(varDeclTC) ){
+	  mCurrentEntry->setType(varDeclTC);
 	  mCurrentEntry->setName(mLookAhead.getLexeme());
 	  if(match(Id) && arraySizex() && match(Semic))
 	  {
@@ -979,17 +995,57 @@ Parser::type ()
 }
 
 bool
+Parser::type (std::string &type)
+{
+  bool success = skipErrors(rule::type);
+  if(first(Id_Int))
+  {
+      type = mLookAhead.getLexeme();
+      if(match(Id_Int))
+      {
+
+	  mSs<< "<type> -> int"<<std::endl;
+
+      }
+      else{success = false;}
+  }
+  else if(first(Id_Float))
+  {
+      type = mLookAhead.getLexeme();
+      if(match(Id_Float))
+      {
+	mSs<< "<type> -> float"<<std::endl;
+
+      }
+      else{success = false;}
+  }
+  else if(first(Id))
+  {
+      type = mSeV.checkUserType(mLookAhead.getLexeme(), mCurrentTable);
+      if(match(Id))
+      {
+	mSs<< "<type> -> id"<<std::endl;
+
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
 Parser::fParams ()
 {
+  std::string fParamsTC;
   bool success = skipErrors(rule::fParams);
   if(first(rule::type))
   {
       mCurrentTable->insert("param", mCurrentEntry);
       mFunctionEntry->addParameter(mLookAhead.getLexeme());
-      mCurrentEntry->setType(mLookAhead.getLexeme());
       mCurrentEntry->setKind(kind::Parameter);
       mCurrentEntry->setStructure(structure::Simple);
-      if(type() ){
+      if(type(fParamsTC) ){
+	mCurrentEntry->setType(fParamsTC);
 	mCurrentEntry->setName(mLookAhead.getLexeme());
 	if(match(Id) && arraySizex() && fParamsTailx())
 	{
@@ -1056,6 +1112,7 @@ Parser::fParamsTailx ()
 bool
 Parser::fParamsTail ()
 {
+  std::string fParamsTailTC;
   bool success = skipErrors(rule::fParamsTail);
   if(first(Com))
   {
@@ -1063,11 +1120,12 @@ Parser::fParamsTail ()
       {
 	  mCurrentTable->insert("param", mCurrentEntry);
 	  mFunctionEntry->addParameter(mLookAhead.getLexeme());
-	  mCurrentEntry->setType(mLookAhead.getLexeme());
+
 	  mCurrentEntry->setKind(kind::Parameter);
 	  mCurrentEntry->setStructure(structure::Simple);
-	  if( type() )
+	  if( type(fParamsTailTC) )
 	  {
+	    mCurrentEntry->setType(fParamsTailTC);
 	    mCurrentEntry->setName(mLookAhead.getLexeme());
 	    if( match(Id) && arraySizex())
 	    {

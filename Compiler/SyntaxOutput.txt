@@ -639,6 +639,8 @@ arrayUtility
 <arraySize*> -> <arraySize><arraySize*> 
 <arraySize*> -> <arraySize><arraySize*> 
 ;
+//Random test;
+
 <varDecl> -> <type>id<arraySize*>;
 <varDecl*> -> epsilon
 <varDecl*> -> <varDecl><varDecl*> 

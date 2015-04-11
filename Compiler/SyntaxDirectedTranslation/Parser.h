@@ -9,6 +9,8 @@
 #define PARSER_H_
 
 #include "../LexicalAnalysis/LexicalAnalyzer.h"
+#include "SemanticAction/SemanticVerification.h"
+#include "SemanticAction/SemanticTranslation.h"
 #include "SymbolTable.h"
 #include <iostream>
 #include <fstream>
@@ -83,13 +85,16 @@ private:
   Token				mLookAhead;
   Token				mPeek;
   LexicalAnalyzer 		mLex;
+  SemanticVerification		mSeV;
   std::stringstream		mSs;
   std::stringstream		mTs;
-  SymbolTable			mTableHead;
+  SymbolTable*			mTableHead;
 
   SymbolTable*			mCurrentTable;
   TableEntry*			mFunctionEntry;
   TableEntry*			mCurrentEntry;
+
+  void		createTable(std::string name);
 
   void		addTokenToStream();
 
@@ -137,6 +142,7 @@ private:
   bool		arraySizex();
   bool		arraySize();
   bool		type();
+  bool		type(std::string &type);
   bool		fParams();
   bool		aParams();
   bool		fParamsTailx();
