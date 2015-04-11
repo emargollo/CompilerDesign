@@ -8,8 +8,8 @@
 #ifndef DRIVER_H_
 #define DRIVER_H_
 
-#include "Parser.h"
-#include "SymbolTable.h"
+#include "SyntaxDirectedTranslation/Parser.h"
+#include "SyntaxDirectedTranslation/SymbolTable.h"
 #include <fstream>
 
 class Driver

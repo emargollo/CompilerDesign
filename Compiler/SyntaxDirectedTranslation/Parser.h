@@ -8,7 +8,7 @@
 #ifndef PARSER_H_
 #define PARSER_H_
 
-#include "LexicalAnalyzer.h"
+#include "../LexicalAnalysis/LexicalAnalyzer.h"
 #include "SymbolTable.h"
 #include <iostream>
 #include <fstream>
