@@ -19,15 +19,28 @@ SemanticVerification::~SemanticVerification ()
 }
 
 std::string
-SemanticVerification::checkOperatorTypes (std::string type1, std::string type2)
+SemanticVerification::checkOperatorTypes (std::string type1, std::string type2, bool& success)
 {
-  return "..";
+
+  return "";
 }
 
 std::string
-SemanticVerification::checkVarType (std::string var, SymbolTable* table)
+SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& success)
 {
-  return "..";
+  std::string type;
+  TableEntry *t;
+  bool found;
+  table->search(var, t, found);
+  if(found)
+  {
+      return t->getType();
+  }
+  else
+  {
+      std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
+      return "Variable not found";
+  }
 }
 
 std::string
@@ -43,11 +56,9 @@ SemanticVerification::checkUserType (std::string type, SymbolTable* table, bool&
 	  return type;
       }
   }
-  else
-  {
-      success = false;
-      return "Undefined Type";
-  }
+  std::cerr<<"Undefined User Type used."<<std::endl;
+  success = false;
+  return "Undefined Type";
 }
 
 std::string

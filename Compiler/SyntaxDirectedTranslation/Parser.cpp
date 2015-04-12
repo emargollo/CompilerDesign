@@ -53,10 +53,6 @@ Parser::parse (std::string fileName, bool output)
     myfile<<mTableHead->print();
     myfile.close();
   }
-  if(success)
-  {
-      success = mTableHead->dualEntrySearch();
-  }
   std::cout<<mTableHead->print();
 
   return success;
@@ -491,12 +487,21 @@ Parser::statement ()
   }
   else if(first(Id_For))
   {
-      if(match(Id_For) && match(Opar) && type() && match(Id) && assignOp() &&
+      std::string forVar;
+      mCurrentTable->insert("forVar", mCurrentEntry);
+      mCurrentEntry->setKind(kind::Variable);
+      mCurrentEntry->setStructure(structure::Simple);
+      if(match(Id_For) && match(Opar) && type(forVar))
+      {
+	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  if(match(Id) && assignOp() &&
 	  expr() && match(Semic) && relExpr() && match(Semic) && assignStat()
 	  && match(Cpar) && statBlock() && match(Semic))
-      {
-	  mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
-
+	  {
+	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
+	      mCurrentEntry->setType(forVar);
+	  }
+	  else{success = false;}
       }
       else{success = false;}
   }
@@ -596,6 +601,24 @@ Parser::expr ()
 }
 
 bool
+Parser::expr (std::string Es)
+{
+  std::string As, Ps;
+  bool success = skipErrors(rule::expr);
+  if(first(rule::arithExpr))
+  {
+      if(arithExpr(As) && pRel(As, Ps))
+      {
+	  mSs<< "<expr> -> <arithExpr><pRel>" <<std::endl;
+	  Es = Ps;
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
 Parser::pRel ()
 {
   bool success = skipErrors(rule::pRel);
@@ -618,6 +641,29 @@ Parser::pRel ()
 }
 
 bool
+Parser::pRel (std::string& Ai, std::string& Ps)
+{
+  std::string As;
+  bool success = skipErrors(rule::pRel);
+  if(first(rule::relOp))
+  {
+      if(relOp() && arithExpr(As))
+      {
+	  mSs<< "<pRel> -> <relOp><arithExpr>" <<std::endl;
+	  Ps = mSeV.checkOperatorTypes(Ai, As, success);
+      }
+      else{success = false;}
+  }
+  else if(follow(rule::pRel))
+  {
+      mSs<< "<pRel> -> epsilon" <<std::endl;
+      Ps = Ai;
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
 Parser::relExpr ()
 {
   bool success = skipErrors(rule::relExpr);
@@ -627,6 +673,24 @@ Parser::relExpr ()
       {
 	  mSs<< "<relExpr> -> <arithExpr><relOp><arithExpr>" <<std::endl;
 
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
+Parser::relExpr (std::string Rs)
+{
+  std::string A1s, A2s;
+  bool success = skipErrors(rule::relExpr);
+  if(first(rule::arithExpr))
+  {
+      if(arithExpr(A1s) && relOp() && arithExpr(A2s))
+      {
+	  mSs<< "<relExpr> -> <arithExpr><relOp><arithExpr>" <<std::endl;
+	  mSeV.checkOperatorTypes(A1s, A2s, success);
       }
       else{success = false;}
   }
@@ -652,6 +716,24 @@ Parser::arithExpr ()
 }
 
 bool
+Parser::arithExpr (std::string& As)
+{
+  std::string Ts, Als;
+  bool success = skipErrors(rule::arithExpr);
+  if(first(rule::term))
+  {
+      if(term(Ts) && arithExprl(Ts, Als))
+      {
+	  mSs<< "<arithExpr> -> <term><arithExpr'>"<<std::endl;
+	  As = Als;
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
 Parser::arithExprl ()
 {
   bool success = skipErrors(rule::arithExprl);
@@ -668,6 +750,29 @@ Parser::arithExprl ()
   {
       mSs<< "<arithExpr'> -> epsilon" <<std::endl;
 
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
+Parser::arithExprl (std::string& Ti, std::string& Als)
+{
+  std::string Ts, Al2s;
+  bool success = skipErrors(rule::arithExprl);
+  if(first(rule::addOp))
+  {
+      if(addOp() && term(Ts) && arithExprl(Ts, Al2s))
+      {
+	  mSs<< "<arithExpr'> -> <addOp><term><arithExpr'>" <<std::endl;
+	  Als = mSeV.checkOperatorTypes(Ti, Al2s, success);
+      }
+      else{success = false;}
+  }
+  else if(follow(rule::arithExprl))
+  {
+      mSs<< "<arithExpr'> -> epsilon" <<std::endl;
+      Als = Ti;
   }
   else{success = false;}
   return(success);
@@ -717,6 +822,25 @@ Parser::term ()
 }
 
 bool
+Parser::term (std::string& Ts)
+{
+  std::string Fs, Tls;
+  bool success = skipErrors(rule::term);
+  if(first(rule::factor))
+  {
+      if(factor(Fs) && terml(Fs, Tls))
+      {
+	  mSs<< "<term> -> <factor><term'>"<<std::endl;
+	  Ts = Tls;
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+
+bool
 Parser::terml ()
 {
   bool success = skipErrors(rule::terml);
@@ -733,6 +857,29 @@ Parser::terml ()
   {
       mSs<< "<term'> -> epsilon" <<std::endl;
 
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
+Parser::terml (std::string& Fi, std::string& Tls)
+{
+  std::string Fs, Tl2s;
+  bool success = skipErrors(rule::terml);
+  if(first(rule::multOp))
+  {
+      if(multOp() && factor(Fs) && terml(Fs, Tl2s))
+      {
+	  mSs<< "<term'> -> <multOp><factor><term'>" <<std::endl;
+	  Tls = mSeV.checkOperatorTypes(Fi, Tl2s, success);
+      }
+      else{success = false;}
+  }
+  else if(follow(rule::terml))
+  {
+      mSs<< "<term'> -> epsilon" <<std::endl;
+      Tls = Fi;
   }
   else{success = false;}
   return(success);
@@ -793,6 +940,70 @@ Parser::factor ()
       {
       	mSs<< "<factor> -> <sign><factor>"<<std::endl;
 
+      }
+      else{success = false;}
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
+Parser::factor (std::string& Fs)
+{
+  std::string Es, F2s;
+  bool success = skipErrors(rule::factor);
+  if(first(Id))
+  {
+      std::string id = mLookAhead.getLexeme();
+      if(match(Id) && indicex() &&  idnestx() && varFuncCall())
+      {
+	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
+	  Fs = mSeV.checkVarType(id, mCurrentTable, success);
+      }
+      else{success = false;}
+  }
+  else if(first(Float))
+  {
+      if(match(Float))
+      {
+	  mSs<< "<factor>	-> num"<<std::endl;
+	  Fs = "float";
+      }
+      else{success = false;}
+  }
+  else if(first(Int))
+  {
+      if(match(Int))
+      {
+	mSs<< "<factor> -> num"<<std::endl;
+	Fs = "int";
+      }
+      else{success = false;}
+  }
+  else if(first(Opar))
+  {
+      if(match(Opar) && arithExpr(Es) && match(Cpar)	)
+      {
+	mSs<< "<factor> -> (<arithExpr>)"<<std::endl;
+	Fs = Es;
+      }
+      else{success = false;}
+  }
+  else if(first(Id_Not))
+  {
+      if(match(Id_Not) && factor(F2s))
+      {
+	mSs<< "<factor> -> not<factor>"<<std::endl;
+	Fs = F2s;
+      }
+      else{success = false;}
+  }
+  else if(rule::sign)
+  {
+      if(sign() && factor(F2s))
+      {
+      	mSs<< "<factor> -> <sign><factor>"<<std::endl;
+      	Fs = F2s;
       }
       else{success = false;}
   }
@@ -903,13 +1114,14 @@ Parser::indicex ()
 bool
 Parser::indice ()
 {
+  std::string As;
   bool success = skipErrors(rule::indice);
   if(first(Obra))
   {
-      if(match(Obra) && arithExpr() && match(Cbra))
+      if(match(Obra) && arithExpr(As) && match(Cbra))
       {
 	  mSs<< "<indice>	-> [<arithmExpr>]"<<std::endl;
-
+	  mSeV.checkOperatorTypes(As, "int", success);
       }
       else{success = false;}
   }

@@ -25,36 +25,6 @@ SymbolTable::getEntries ()
   return mEntries;
 }
 
-bool
-SymbolTable::dualEntrySearch ()
-{
-  bool found = false;
-  std::vector<SymbolTable*> vs;
-  for(unsigned int i = 0; i < mEntries.size(); i++)
-  {
-     for(int j = i+1; j < mEntries.size(); j++)
-     {
-	 if(mEntries.at(i)->getName() == mEntries.at(j)->getName() && i != j)
-	 {
-	     std::cerr<<"Multiple Declared identifier: "<<mEntries.at(i)->getName()<<" at Scope: "<<mName<<std::endl;
-	     found = true;
-	 }
-     }
-     if(mEntries.at(i)->getLink() != NULL)
-       vs.push_back(mEntries.at(i)->getLink());
-  }
-  for(unsigned int i = 0; i < vs.size(); i++)
-  {
-      bool f2 = vs.at(i)->dualEntrySearch();
-      if(!found)
-      {
-	  found = !f2;
-      }
-
-  }
-  return !found;
-}
-
 SymbolTable::~SymbolTable ()
 {
   mEntries.clear();
