@@ -37,7 +37,8 @@ program {
 	int minValue;
 	Utility utility;
 	Utility arrayUtility[2][3][6][7];
-	Random test;
+	//int idx						//If uncommented will cause Double Declaration Error.
+	//Random test;				//If uncommented will cause Undefined Type Error.
 	for(int t = 0; t<=100 ; t = t + 1)
 	{
 	get(sample[t]);

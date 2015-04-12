@@ -37,8 +37,9 @@ Parser::parse (std::string fileName, bool output)
   {
       success = true;
   }
-  else
+  else{
     success = false;
+  }
   //std::cout<<mSs.str()<<std::endl;
   if(output){
     std::ofstream myfile;
@@ -57,6 +58,7 @@ Parser::parse (std::string fileName, bool output)
       success = mTableHead->dualEntrySearch();
   }
   std::cout<<mTableHead->print();
+
   return success;
 }
 
@@ -158,7 +160,7 @@ Parser::classDecl ()
       mCurrentEntry->setKind(kind::Class);
 
       if(match(Id_Class)){
-	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable->getPreviousTable(), success));
 	  mCurrentTable->setName(mLookAhead.getLexeme());	//Symbol Table Functions
 	  if(match(Id) && match(Okey) && varFuncDeclx() && match(Ckey) && match(Semic))
 	  {
@@ -224,7 +226,7 @@ Parser::typeDef ()
       //mCurrentEntry->setType(mLookAhead.getLexeme());
 
       if(type(typeDefTC)){
-	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
 	  if(match(Id))
 	  {
 	      mCurrentEntry->setType(typeDefTC);
@@ -360,7 +362,7 @@ Parser::funcHead ()
       if(type(funcHeadTC)){
 	  mCurrentEntry->setType(funcHeadTC);
 	  mCurrentTable->setName(mLookAhead.getLexeme());
-	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable->getPreviousTable(), success));
 	  mFunctionEntry = mCurrentEntry;
 	  if(match(Id) && match(Opar) && fParams() && match(Cpar))
 	  {
@@ -428,7 +430,7 @@ Parser::varDecl ()
       mCurrentEntry->setStructure(structure::Simple);
       if(type(varDeclTC) ){
 	  mCurrentEntry->setType(varDeclTC);
-	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
 	  if(match(Id) && arraySizex() && match(Semic))
 	  {
 	      mSs<< "<varDecl> -> <type>id<arraySize*>;"<<std::endl;
@@ -1021,7 +1023,7 @@ Parser::type (std::string &type)
   }
   else if(first(Id))
   {
-      type = mSeV.checkUserType(mLookAhead.getLexeme(), mCurrentTable);
+      type = mSeV.checkUserType(mLookAhead.getLexeme(), mCurrentTable, success);
       if(match(Id))
       {
 	mSs<< "<type> -> id"<<std::endl;
@@ -1046,7 +1048,7 @@ Parser::fParams ()
       mCurrentEntry->setStructure(structure::Simple);
       if(type(fParamsTC) ){
 	mCurrentEntry->setType(fParamsTC);
-	mCurrentEntry->setName(mLookAhead.getLexeme());
+	mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
 	if(match(Id) && arraySizex() && fParamsTailx())
 	{
 	    mSs<< "<fParams> -> <type>id<arraySize*><fParamsTail*>"<<std::endl;
@@ -1126,7 +1128,7 @@ Parser::fParamsTail ()
 	  if( type(fParamsTailTC) )
 	  {
 	    mCurrentEntry->setType(fParamsTailTC);
-	    mCurrentEntry->setName(mLookAhead.getLexeme());
+	    mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
 	    if( match(Id) && arraySizex())
 	    {
 		mSs<< "<fParamsTail> -> ,<type>id<arraySize*>" <<std::endl;

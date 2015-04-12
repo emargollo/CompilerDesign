@@ -31,7 +31,7 @@ SemanticVerification::checkVarType (std::string var, SymbolTable* table)
 }
 
 std::string
-SemanticVerification::checkUserType (std::string type, SymbolTable* table)
+SemanticVerification::checkUserType (std::string type, SymbolTable* table, bool& success)
 {
   TableEntry *t;
   bool found;
@@ -45,11 +45,25 @@ SemanticVerification::checkUserType (std::string type, SymbolTable* table)
   }
   else
   {
+      success = false;
       return "Undefined Type";
   }
 }
 
-
+std::string
+SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* table, bool& success)
+{
+  for(int i = 0; i < table->getEntries().size(); i++)
+  {
+      if(table->getEntries().at(i)->getName() == name)
+      {
+	  success = false;
+	  std::cerr<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
+	  return "Multiple Declaration";
+      }
+  }
+  return name;
+}
 
 
 

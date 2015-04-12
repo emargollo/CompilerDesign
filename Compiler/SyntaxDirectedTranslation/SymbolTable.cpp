@@ -28,7 +28,7 @@ SymbolTable::getEntries ()
 bool
 SymbolTable::dualEntrySearch ()
 {
-  bool found = false;;
+  bool found = false;
   std::vector<SymbolTable*> vs;
   for(unsigned int i = 0; i < mEntries.size(); i++)
   {
@@ -48,11 +48,11 @@ SymbolTable::dualEntrySearch ()
       bool f2 = vs.at(i)->dualEntrySearch();
       if(!found)
       {
-	  found = f2;
+	  found = !f2;
       }
 
   }
-  return found;;
+  return !found;
 }
 
 SymbolTable::~SymbolTable ()

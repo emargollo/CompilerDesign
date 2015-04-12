@@ -49,7 +49,11 @@ Driver::runDriver (bool toFile, bool errorFile)
   tkFile.close();
   erFile.close();*/
   bool t = mParser.parse("example.txt", true);	//Driver to run parser.
-  std::cout<<t<<std::endl;
+  if(t)
+  {
+      std::cout<<"Success!"<<std::endl;
+  }
+
   mSymbolTable = SymbolTable("Global", NULL);
 
 }
@@ -57,7 +61,7 @@ Driver::runDriver (bool toFile, bool errorFile)
 int main(int argc, char **argv) {
   Driver d;
   d.runDriver(true, true);
-  std::cin.get();
+//  std::cin.get();
 }
 
 

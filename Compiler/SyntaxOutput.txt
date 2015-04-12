@@ -639,7 +639,9 @@ arrayUtility
 <arraySize*> -> <arraySize><arraySize*> 
 <arraySize*> -> <arraySize><arraySize*> 
 ;
-//Random test;
+//int idx						//If uncommented will cause Double Declaration Error.
+
+//Random test;				//If uncommented will cause Undefined Type Error.
 
 <varDecl> -> <type>id<arraySize*>;
 <varDecl*> -> epsilon

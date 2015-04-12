@@ -23,7 +23,8 @@ public:
   std::string	checkOperatorTypes(std::string type1, std::string type2);
   std::string	checkVarType(std::string var, SymbolTable *table);
 
-  std::string	checkUserType(std::string type, SymbolTable *table);
+  std::string	checkUserType(std::string type, SymbolTable *table, bool& success);
+  std::string	checkDoubleDeclaration(std::string name, SymbolTable *table, bool& success);
 
 
 private:
