@@ -62,6 +62,39 @@ SemanticVerification::checkReturnType(std::string decl, std::string ret, bool& s
   return "Operation not allowed";
 }
 
+std::string
+SemanticVerification::checkParameters(std::string decl, std::vector<std::string> call, SymbolTable* table, bool& success)
+{
+  std::string type;
+  TableEntry *t;
+  bool found;
+  table->search(decl, t, found);
+  if(found)
+  {
+      if(t->getParameters().size() == call.size())
+      {
+	  for(int i = 0; i < call.size(); i++)
+	  {
+	      checkAssigTypes(t->getParameters().at(i), call.at(i), success);
+	  }
+	  return "All parameters are correct";
+      }
+      else
+      {
+	  success = false;
+	  std::cerr<<"Incorrect amout of Parameters for function: "<<decl<<std::endl;
+	  return "Incorrect amout of Parameter";
+      }
+  }
+  else
+  {
+      success = false;
+      std::cerr<<"Use of Function not Declared: "<<decl<<std::endl;
+      return "Variable not found";
+  }
+
+
+}
 
 std::string
 SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& success)
