@@ -47,6 +47,23 @@ SemanticVerification::checkAssigTypes (std::string type1, std::string type2, boo
 }
 
 std::string
+SemanticVerification::checkReturnType(std::string decl, std::string ret, bool& success)
+{
+  if((decl == "int" || decl == "float") &&
+      (ret == "int" || ret == "float")){
+      return decl;
+  }
+  else if(decl == ret)
+  {
+      return decl;
+  }
+  std::cerr<<"Can't Return: "<<ret<< " in a : " << decl << " Function" <<std::endl;
+  success = false;
+  return "Operation not allowed";
+}
+
+
+std::string
 SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& success)
 {
   std::string type;

@@ -199,7 +199,8 @@ Parser::varFuncDecl ()
   bool success = skipErrors(rule::varFuncDecl);
   if(first(rule::typeDef))
   {
-      if(typeDef() && varFunc())
+      std::string Hr;
+      if(typeDef(Hr) && varFunc(Hr))
       {
 	  mSs<< "<varFuncDecl> -> <typeDef><varFunc>"<<std::endl;
 
@@ -211,7 +212,7 @@ Parser::varFuncDecl ()
 }
 
 bool
-Parser::typeDef ()
+Parser::typeDef (std::string& Tr)
 {
   bool success = skipErrors(rule::typeDef);
 
@@ -225,6 +226,7 @@ Parser::typeDef ()
 	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
 	  if(match(Id))
 	  {
+	      Tr = typeDefTC;
 	      mCurrentEntry->setType(typeDefTC);
 	      mSs<< "<typeDef> -> <type>id"<<std::endl;
 
@@ -238,7 +240,7 @@ Parser::typeDef ()
 }
 
 bool
-Parser::varFunc ()
+Parser::varFunc (std::string& Tr)
 {
   bool success = skipErrors(rule::varFunc);
   if(first(rule::arraySizex) || first(Semic))
@@ -261,7 +263,7 @@ Parser::varFunc ()
       mCurrentEntry->setLink(mCurrentTable);
 
       mFunctionEntry = mCurrentEntry;
-      if(match(Opar) && fParams() && match(Cpar) && funcBody() && match(Semic))
+      if(match(Opar) && fParams() && match(Cpar) && funcBody(Tr) && match(Semic))
       {
 	mSs<< "<varFunc> -> ( <fParams> ) <funcBody>;"<<std::endl;
       }
@@ -280,13 +282,14 @@ Parser::progBody ()
   {
 
       if(funcDefx()){
+	  std::string Fr = "int";
 	  mCurrentTable->insert("Program", mCurrentEntry);
 	  createTable("Program");
 	  mCurrentEntry->setKind(kind::Function);
 	  mCurrentEntry->setStructure(structure::Simple);
 	  mCurrentEntry->setType(mLookAhead.getLexeme());
 	  mCurrentEntry->setLink(mCurrentTable);
-	  if(match(Id_Program) && funcBody() && match(Semic) )
+	  if(match(Id_Program) && funcBody(Fr) && match(Semic) )
 	  {
 	      mSs<< "<progBody> -> program<funcBody>;<funcDef*>" << std::endl;
 
@@ -324,10 +327,11 @@ Parser::funcDefx ()
 bool
 Parser::funcDef ()
 {
+  std::string Hr;
   bool success = skipErrors(rule::funcDef);
   if(first(rule::funcHead))
   {
-      if(funcHead() && funcBody() && match(Semic))
+      if(funcHead(Hr) && funcBody(Hr) && match(Semic))
       {
 	  mSs<< "<funcDef> -> <funcHead><funcBody>;"<<std::endl;
 
@@ -339,7 +343,7 @@ Parser::funcDef ()
 }
 
 bool
-Parser::funcHead ()
+Parser::funcHead (std::string& Hr)
 {
   bool success = skipErrors(rule::funcHead);
   if(first(rule::type))
@@ -362,7 +366,7 @@ Parser::funcHead ()
 	  if(match(Id) && match(Opar) && fParams() && match(Cpar))
 	  {
 	    mSs<< "<funcHead>	-> <type>id(<fParams>)"<<std::endl;
-
+	    Hr = funcHeadTC;
 	  }
 	  else{success = false;}
       }
@@ -373,12 +377,12 @@ Parser::funcHead ()
 }
 
 bool
-Parser::funcBody ()
+Parser::funcBody (std::string& Fr)
 {
   bool success = skipErrors(rule::funcBody);
   if(first(Okey))
   {
-      if(match(Okey) && varDeclx() && statementx() && match(Ckey))
+      if(match(Okey) && varDeclx() && statementx(Fr) && match(Ckey))
       {
 	  mCurrentTable = mCurrentTable->getPreviousTable();//Exit Method/Program/Function Tables
 	  mSs<< "<funcBody> -> {<varDecl*><statement*>}"<<std::endl;
@@ -440,12 +444,12 @@ Parser::varDecl ()
 }
 
 bool
-Parser::statementx ()
+Parser::statementx (std::string& Sxr)
 {
   bool success = skipErrors(rule::statementx);
   if(first(rule::statement))
   {
-      if(statement() && statementx())
+      if(statement(Sxr) && statementx(Sxr))
       {
       mSs<<"<statement*> -> <statement><statement*> "<<std::endl;
 
@@ -462,7 +466,7 @@ Parser::statementx ()
 }
 
 bool
-Parser::statement ()
+Parser::statement (std::string& Sr)
 {
   std::string Es, Rs, Vs;
   bool success = skipErrors(rule::statement);
@@ -478,7 +482,7 @@ Parser::statement ()
   else if(first(Id_If))
   {
       if(match(Id_If) && match(Opar) && expr(Es) && match(Cpar) && match(Id_Then)
-	  && statBlock() && match(Id_Else) && statBlock() && match(Semic))
+	  && statBlock(Sr) && match(Id_Else) && statBlock(Sr) && match(Semic))
       {
 	  mSs<< "<statement> -> if(<expr>)then<statBlock>else<statBlock>;"<<std::endl;
 
@@ -501,7 +505,7 @@ Parser::statement ()
 	  }
 	  if(match(Id) && assignOp() &&
 	  expr(Es) && match(Semic) && relExpr(Rs) && match(Semic) && assignStat()
-	  && match(Cpar) && statBlock() && match(Semic))
+	  && match(Cpar) && statBlock(Sr) && match(Semic))
 	  {
 	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
 	      if(newVar)
@@ -533,6 +537,7 @@ Parser::statement ()
   {
       if(match(Id_Return) && match(Opar) && expr(Es) && match(Cpar) && match(Semic))
       {
+	  mSeV.checkReturnType(Sr, Es, success);
 	  mSs<< "<statement> -> return(<expr>);"<<std::endl;
 
       }
@@ -561,12 +566,12 @@ Parser::assignStat ()
 }
 
 bool
-Parser::statBlock ()
+Parser::statBlock (std::string& Hr)
 {
   bool success = skipErrors(rule::statBlock);
   if(first(Okey))
   {
-      if(match(Okey) && statementx() && match(Ckey))
+      if(match(Okey) && statementx(Hr) && match(Ckey))
       {
 	  mSs<< "<statBlock> -> {<statement*>} "<<std::endl;
 
@@ -575,7 +580,7 @@ Parser::statBlock ()
   }
   else if(first(rule::statement))
   {
-      if(statement())
+      if(statement(Hr))
       {
 	  mSs<< "<statBlock> -> <statement> "<<std::endl;
 

@@ -46,7 +46,8 @@ float randomize2()
 	u1 = u2;
 	value = 100 * (2 + 3.0 / 7.0006);
 	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
-	return (value);
+	//return (u1);					//If uncommented will cause return type error.
+	return(value);
 }; 
 
 program {

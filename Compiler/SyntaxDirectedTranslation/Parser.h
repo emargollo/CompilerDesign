@@ -104,20 +104,20 @@ private:
 
   bool		varFuncDeclx();
   bool		varFuncDecl();
-  bool		typeDef();
-  bool		varFunc();
+  bool		typeDef(std::string& Tr);
+  bool		varFunc(std::string& Tr);
 
   bool		progBody();
   bool		funcDefx();
   bool		funcDef();
-  bool		funcHead();
-  bool		funcBody();
+  bool		funcHead(std::string& Hr);
+  bool		funcBody(std::string& Fr);
   bool		varDeclx();
   bool		varDecl();
-  bool		statementx();
-  bool		statement();
+  bool		statementx(std::string &Sxr);
+  bool		statement(std::string& Sr);
   bool		assignStat();
-  bool		statBlock();
+  bool		statBlock(std::string& Hr);
   bool		expr(std::string& Es);
 
   bool		pRel(std::string& Ai, std::string& Ps);
