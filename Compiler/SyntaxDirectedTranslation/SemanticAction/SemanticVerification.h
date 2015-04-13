@@ -29,7 +29,8 @@ public:
 
   std::string	checkVarInsideNest(std::string nest, std::string name, SymbolTable *table, bool& success);
 
-  void		checkAmountOfIndices(std::string var, int amount, SymbolTable *table, bool& success);
+  std::string	checkAmountOfIndices(std::string var, int amount, SymbolTable *table, bool& success);
+  std::string	checkAmountOfIndicesInNest(std::string nest, std::string var, int amount, SymbolTable *table, bool& success);
 
   bool		checkDoubleDeclaration(std::string name, SymbolTable *table);
 

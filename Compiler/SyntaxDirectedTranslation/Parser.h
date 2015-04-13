@@ -137,11 +137,9 @@ private:
   bool		idnestx(std::string nest, std::string& Ixs);
   bool		idnest(std::string nest, std::string& Is);
 
-  bool		indicex();
-  bool		indice();
-
-  bool		indicex(std::string var, int );
-  bool		indice();
+  bool		indicex(std::string& Is, std::string& var, int& amount);
+  bool		indicex(std::string nest, std::string& Is, std::string& var, int& amount);
+  bool		indice(std::string& Is, int& amount);
 
   bool		arraySizex();
   bool		arraySize();

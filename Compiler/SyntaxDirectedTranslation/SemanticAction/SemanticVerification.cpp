@@ -118,12 +118,14 @@ SemanticVerification::checkVarInsideNest(std::string nest, std::string name, Sym
 	   }
 	   else
 	   {
+	       success = false;
 	       std::cerr<<"Variable not found in Nest: "<< nest<< "."<< name<<std::endl;
 	       return "Variable not found";
 	   }
        }
        else
        {
+	   success = false;
 	   std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
 	   return "Not a nest";
        }
@@ -131,33 +133,94 @@ SemanticVerification::checkVarInsideNest(std::string nest, std::string name, Sym
    }
    else
    {
+       success = false;
        std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
        return "Variable not found";
    }
 }
 
-void
+std::string
 SemanticVerification::checkAmountOfIndices(std::string var, int amount, SymbolTable *table, bool& success)
 {
   std::string type;
   TableEntry *t;
   bool found;
   table->search(var, t, found);
+
+
   if(found)
   {
       if(t->getDimension().size() == amount)
       {
-	  return;
+	  return t->getType();
       }
       else
       {
-	  std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+	  //std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+	  std::stringstream ss;
+	  ss<<"array"<< t->getDimension().size()-amount;
+	  return ss.str();
       }
   }
   else
   {
+      success = false;
       std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
+      return "Variable not found";
   }
+}
+
+std::string
+SemanticVerification::checkAmountOfIndicesInNest(std::string nest, std::string var, int amount, SymbolTable *table, bool& success)
+{
+  std::string type;
+  TableEntry *t, *t2;
+  bool found;
+  table->search(var, t, found);
+
+  table->search(nest, t, found);
+  if(found)
+  {
+      nest = t->getType();
+      table->search(nest, t, found);
+      if(t->getLink() != NULL)
+      {
+	 t->getLink()->search(var, t2, found);
+	 if(found)
+	 {
+	     if(t2->getDimension().size() == amount)
+	     {
+		return t2->getType();
+	     }
+	     else
+	     {
+		//std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+		 std::stringstream ss;
+		 ss<<"array"<< t->getDimension().size()-amount;
+		 return ss.str();
+	     }
+	 }
+	 else
+	 {
+	     success = false;
+	     std::cerr<<"Variable not found in Nest: "<< nest<< "."<< var<<std::endl;
+	     return "Variable not found";
+	 }
+     }
+     else
+     {
+       success = false;
+       std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+       return "Not a nest";
+     }
+  }
+  else
+  {
+       success = false;
+       std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+       return "Variable not found";
+  }
+
 }
 
 

@@ -25,6 +25,8 @@ Table: randomize{
 Entry: [Name: value, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }
 Table: randomize2{
+Entry: [Name: u1, Type:Utility, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
+Entry: [Name: u2, Type:Utility, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: value, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }
 Table: Program{
@@ -34,5 +36,4 @@ Entry: [Name: maxValue, Type:int, Kind: Variable, Structure: Simple, Parameters:
 Entry: [Name: minValue, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: utility, Type:Utility, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: arrayUtility, Type:Utility, Kind: Variable, Structure: Array, Parameters: [ ], Dimensions:  [2], [3], [6], [7], , Link: -]
-Entry: [Name: t, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }

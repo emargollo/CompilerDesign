@@ -40,7 +40,10 @@ float randomize()
 }; 
 float randomize2()
 {
+	Utility u1;
+	Utility u2;
 	float value;
+	u1 = u2;
 	value = 100 * (2 + 3.0 / 7.0006);
 	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
 	return (value);
@@ -55,6 +58,9 @@ program {
 	Utility arrayUtility[2][3][6][7];
 	//int idx						//If uncommented will cause Double Declaration Error.
 	//Random test;					//If uncommented will cause Undefined Type Error.
+	
+	//maxValue = minValue + sample;//If uncommented will cause Type Conflict between Array1 and Ints.
+	
 	for(int t = 0; t<=100 ; t = t + 1)
 	{
 		get(sample[t]);
@@ -64,7 +70,7 @@ program {
 	//if(idx > a){}					//If uncommented will cause Undefined Variable Error.
 	maxValue = utility.findMax(sample);
 	minValue = utility.findMin(sample);
-	utility. var1[4][1][0][0][0][0][0] = 10;
+	utility.var1[4][1][0][0][0][0][0] = 10;
 	arrayUtility[1][1][1][1].var1[4][1][0][0][0][0][0]
 	= 2;
 	put(maxValue);

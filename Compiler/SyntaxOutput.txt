@@ -704,6 +704,18 @@ randomize2
 )
 <funcHead>	-> <type>id(<fParams>)
 {
+Utility
+<type> -> id
+u1
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+Utility
+<type> -> id
+u2
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
 float
 <type> -> float
 value
@@ -712,6 +724,28 @@ value
 <varDecl> -> <type>id<arraySize*>;
 <varDecl*> -> epsilon
 <varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+u1
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+u2
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
 value
 <indice*> -> epsilon
 <idnest*> -> epsilon
@@ -830,6 +864,7 @@ value
 <statement*> -> <statement><statement*> 
 <statement*> -> <statement><statement*> 
 <statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
 }
 <funcBody> -> {<varDecl*><statement*>}
 ;
@@ -911,48 +946,13 @@ arrayUtility
 <varDecl*> -> <varDecl><varDecl*> 
 <varDecl*> -> <varDecl><varDecl*> 
 <varDecl*> -> <varDecl><varDecl*> 
-for
-(
-int
-<type> -> int
-t
-=
-<assignOp> -> =
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-;
-t
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<=
-<relOp> -> <=
-100
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<relExpr> -> <arithExpr><relOp><arithExpr>
-;
-t
+maxValue
 <indice*> -> epsilon
 <idnest*> -> epsilon
 <variable> -> id<indice*><idnest*>
 =
 <assignOp> -> =
-t
+minValue
 <indice*> -> epsilon
 <idnest*> -> epsilon
 <varFuncCall> -> epsilon
@@ -961,460 +961,12 @@ t
 <term> -> <factor><term'>
 +
 <addOp> -> +
-1
-<factor> -> num
+sample
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
 <term'> -> epsilon
 <term> -> <factor><term'>
 <arithExpr'> -> epsilon
 <arithExpr'> -> <addOp><term><arithExpr'>
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-)
-{
-get
-(
-sample
-[
-t
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<idnest*> -> epsilon
-<variable> -> id<indice*><idnest*>
-)
-;
-<statement> -> get(<variable>);
-sample
-[
-t
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<idnest*> -> epsilon
-<variable> -> id<indice*><idnest*>
-=
-<assignOp> -> =
-(
-sample
-[
-t
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-*
-<multOp> -> *
-randomize
-<indice*> -> epsilon
-<idnest*> -> epsilon
-(
-<aParams> -> epsilon
-)
-<varFuncCall> -> (<aParams>)
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term'> -> <multOp><factor><term'>
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-)
-<factor> -> (<arithExpr>)
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-;
-<statement> -> <assignStat>;
-<statement*> -> epsilon
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-}
-<statBlock> -> {<statement*>} 
-;
-//if(idx > a){}					//If uncommented will cause Undefined Variable Error.
-
-<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;
-maxValue
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<variable> -> id<indice*><idnest*>
-=
-<assignOp> -> =
-utility
-<indice*> -> epsilon
-.
-findMax
-<indice*> -> epsilon
-<idnest> -> id<indice*>.
-<idnest*> -> epsilon
-<idnest*> -> <idnest><idnest*> 
-(
-sample
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<fParamsTail*> -> epsilon
-<aParams> -> <expr><aParamsTail*>
-)
-<varFuncCall> -> (<aParams>)
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-;
-<statement> -> <assignStat>;
-minValue
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<variable> -> id<indice*><idnest*>
-=
-<assignOp> -> =
-utility
-<indice*> -> epsilon
-.
-findMin
-<indice*> -> epsilon
-<idnest> -> id<indice*>.
-<idnest*> -> epsilon
-<idnest*> -> <idnest><idnest*> 
-(
-sample
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<fParamsTail*> -> epsilon
-<aParams> -> <expr><aParamsTail*>
-)
-<varFuncCall> -> (<aParams>)
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-;
-<statement> -> <assignStat>;
-utility
-<indice*> -> epsilon
-.
-var1
-[
-4
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<idnest> -> id<indice*>.
-<idnest*> -> epsilon
-<idnest*> -> <idnest><idnest*> 
-<variable> -> id<indice*><idnest*>
-=
-<assignOp> -> =
-10
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-;
-<statement> -> <assignStat>;
-arrayUtility
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-.
-var1
-[
-4
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-1
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-[
-0
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-]
-<indice>	-> [<arithmExpr>]
-<indice*> -> epsilon
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<indice*> -> <indice><indice*> 
-<idnest> -> id<indice*>.
-<idnest*> -> epsilon
-<idnest*> -> <idnest><idnest*> 
-<variable> -> id<indice*><idnest*>
-=
-<assignOp> -> =
-2
-<factor> -> num
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-<assignStat> -> <variable><assignOp><expr>
-;
-<statement> -> <assignStat>;
-put
-(
-maxValue
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-)
-;
-<statement> -> put(<expr>);
-put
-(
-minValue
-<indice*> -> epsilon
-<idnest*> -> epsilon
-<varFuncCall> -> epsilon
-<factor>	-> id<idnest*><varFuncCall>
-<term'> -> epsilon
-<term> -> <factor><term'>
-<arithExpr'> -> epsilon
-<arithExpr> -> <term><arithExpr'>
-<pRel> -> epsilon
-<expr> -> <arithExpr><pRel>
-)
-;
-<statement> -> put(<expr>);
-<statement*> -> epsilon
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-<statement*> -> <statement><statement*> 
-}
-<funcBody> -> {<varDecl*><statement*>}
-;
-<progBody> -> program<funcBody>;<funcDef*>
-<prog> -> <classDecl*><progBody>
-

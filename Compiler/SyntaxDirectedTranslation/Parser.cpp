@@ -761,12 +761,12 @@ bool
 Parser::factor (std::string& Fs)
 {
   std::string Es, F2s, Is;
+  int amount = 0;
   bool success = skipErrors(rule::factor);
   if(first(Id))
   {
       std::string id = mLookAhead.getLexeme();
-      //Fs = mSeV.checkVarType(id, mCurrentTable, success);
-      if(match(Id) && indicex() &&  idnestx(id, Is) && varFuncCall())
+      if(match(Id) && indicex(Is, id, amount) &&  idnestx(id, Is) && varFuncCall())
       {
 	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
 	  Fs = Is;
@@ -849,10 +849,11 @@ Parser::variable ()
 {
   bool success = skipErrors(rule::variable);
   std::string Is, id;
+  int amount = 0;
   if(first(Id))
   {
       id = mLookAhead.getLexeme();
-      if(match(Id) && indicex() && idnestx(id, Is))
+      if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is))
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
 
@@ -873,14 +874,13 @@ Parser::idnestx (std::string nest, std::string& Ixs)
       if(idnest(nest, Is) && idnestx(nest, Ix2s))
       {
       mSs<<"<idnest*> -> <idnest><idnest*> "<<std::endl;
-      Ixs = Ix2s;
+      Ixs = Is;
       }
       else{success = false;}
   }
   else if(follow(rule::idnestx))
   {
-  mSs<<"<idnest*> -> epsilon"<<std::endl;
-    Ixs = mSeV.checkVarType(nest, mCurrentTable, success);;
+      mSs<<"<idnest*> -> epsilon"<<std::endl;
   }
   else{success = false;}
   return(success);
@@ -890,12 +890,13 @@ bool
 Parser::idnest (std::string nest, std::string& Is)
 {
   std::string name;
+  int amount = 0;
   bool success = skipErrors(rule::idnest);
   if(first(Dot))
   {
       if(match(Dot) ){
 	  name = mLookAhead.getLexeme();
-	  if( match(Id) && indicex())
+	  if( match(Id) && indicex(nest, Is, name, amount))
 	  {
 	    Is = mSeV.checkVarInsideNest(nest, name, mCurrentTable, success);
 	    nest = name;
@@ -911,12 +912,12 @@ Parser::idnest (std::string nest, std::string& Is)
 }
 
 bool
-Parser::indicex ()
+Parser::indicex (std::string& Is, std::string& var, int& amount)
 {
   bool success = skipErrors(rule::indicex);
   if(first(rule::indice))
   {
-      if(indice() && indicex())
+      if(indice(Is, amount) && indicex(Is, var, amount))
       {
       mSs<<"<indice*> -> <indice><indice*> "<<std::endl;
 
@@ -925,15 +926,37 @@ Parser::indicex ()
   }
   else if(follow(rule::indicex))
   {
-  mSs<<"<indice*> -> epsilon"<<std::endl;
-
+      mSs<<"<indice*> -> epsilon"<<std::endl;
+      Is = mSeV.checkAmountOfIndices(var, amount, mCurrentTable, success);
   }
   else{success = false;}
   return(success);
 }
 
 bool
-Parser::indice ()
+Parser::indicex (std::string nest, std::string& Is, std::string& var, int& amount)
+{
+  bool success = skipErrors(rule::indicex);
+  if(first(rule::indice))
+  {
+      if(indice(Is, amount) && indicex(nest, Is, var, amount))
+      {
+      mSs<<"<indice*> -> <indice><indice*> "<<std::endl;
+
+      }
+      else{success = false;}
+  }
+  else if(follow(rule::indicex))
+  {
+      mSs<<"<indice*> -> epsilon"<<std::endl;
+      Is = mSeV.checkAmountOfIndicesInNest(nest, var, amount, mCurrentTable, success);
+  }
+  else{success = false;}
+  return(success);
+}
+
+bool
+Parser::indice (std::string& Is, int& amount)
 {
   std::string As;
   bool success = skipErrors(rule::indice);
@@ -943,6 +966,7 @@ Parser::indice ()
       {
 	  mSs<< "<indice>	-> [<arithmExpr>]"<<std::endl;
 	  mSeV.checkOperatorTypes(As, "int", success);
+	  amount++;
       }
       else{success = false;}
   }
