@@ -21,8 +21,13 @@ SemanticVerification::~SemanticVerification ()
 std::string
 SemanticVerification::checkOperatorTypes (std::string type1, std::string type2, bool& success)
 {
-
-  return "";
+  if((type1 == "int" || type1 == "float") &&
+      (type2 == "int" || type2 == "float")){
+      return "float";
+  }
+  std::cerr<<"Operations between: "<<type1<< " and: " << type2<< " are not allowed"<<std::endl;
+  success = false;
+  return "Operation not allowed";
 }
 
 std::string

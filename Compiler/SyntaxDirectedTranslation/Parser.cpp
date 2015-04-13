@@ -465,6 +465,7 @@ Parser::statementx ()
 bool
 Parser::statement ()
 {
+  std::string Es;
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -477,7 +478,7 @@ Parser::statement ()
   }
   else if(first(Id_If))
   {
-      if(match(Id_If) && match(Opar) && expr() && match(Cpar) && match(Id_Then)
+      if(match(Id_If) && match(Opar) && expr(Es) && match(Cpar) && match(Id_Then)
 	  && statBlock() && match(Id_Else) && statBlock() && match(Semic))
       {
 	  mSs<< "<statement> -> if(<expr>)then<statBlock>else<statBlock>;"<<std::endl;
@@ -500,7 +501,7 @@ Parser::statement ()
 	      mCurrentEntry->setStructure(structure::Simple);
 	  }
 	  if(match(Id) && assignOp() &&
-	  expr() && match(Semic) && relExpr() && match(Semic) && assignStat()
+	  expr(Es) && match(Semic) && relExpr() && match(Semic) && assignStat()
 	  && match(Cpar) && statBlock() && match(Semic))
 	  {
 	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
@@ -522,7 +523,7 @@ Parser::statement ()
   }
   else if(first(Id_Put))
   {
-      if(match(Id_Put) && match(Opar) && expr() && match(Cpar) && match(Semic))
+      if(match(Id_Put) && match(Opar) && expr(Es) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> put(<expr>);"<<std::endl;
 
@@ -531,7 +532,7 @@ Parser::statement ()
   }
   else if(first(Id_Return))
   {
-      if(match(Id_Return) && match(Opar) && expr() && match(Cpar) && match(Semic))
+      if(match(Id_Return) && match(Opar) && expr(Es) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> return(<expr>);"<<std::endl;
 
@@ -545,10 +546,11 @@ Parser::statement ()
 bool
 Parser::assignStat ()
 {
+  std::string Es;
   bool success = skipErrors(rule::assignStat);
   if(first(rule::variable))
   {
-      if(variable() && assignOp() && expr())
+      if(variable() && assignOp() && expr(Es))
       {
 	  mSs<< "<assignStat> -> <variable><assignOp><expr>"<<std::endl;
 
@@ -605,6 +607,7 @@ Parser::expr ()
   else{success = false;}
   return(success);
 }
+
 
 bool
 Parser::expr (std::string Es)
@@ -1288,10 +1291,11 @@ Parser::fParams ()
 bool
 Parser::aParams ()
 {
+  std::string Es;
   bool success = skipErrors(rule::aParams);
   if(first(rule::expr))
   {
-      if(expr() && aParamsTailx())
+      if(expr(Es) && aParamsTailx())
       {
 	  mSs<< "<aParams> -> <expr><aParamsTail*>"<<std::endl;
 
@@ -1385,10 +1389,11 @@ Parser::aParamsTailx ()
 bool
 Parser::aParamsTail ()
 {
+  std::string Es;
   bool success = skipErrors(rule::aParamsTail);
   if(first(Com))
   {
-      if(match(Com) && expr())
+      if(match(Com) && expr(Es))
       {
 	  mSs<< "<aParamsTail> -> ,<expr>"<<std::endl;
 
