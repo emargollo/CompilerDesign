@@ -14,13 +14,11 @@ Table: Utility:findMax{
 Entry: [Name: array, Type:int, Kind: Parameter, Structure: Array, Parameters: [ ], Dimensions:  [100], , Link: -]
 Entry: [Name: maxValue, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: idx, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
-Entry: [Name: idx, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }
 Table: Utility:findMin{
 Entry: [Name: array, Type:int, Kind: Parameter, Structure: Array, Parameters: [ ], Dimensions:  [100], , Link: -]
 Entry: [Name: test, Type:float, Kind: Parameter, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: minValue, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
-Entry: [Name: idx, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: idx, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }
 Table: Program{

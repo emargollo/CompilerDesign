@@ -76,6 +76,21 @@ SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* tab
   return name;
 }
 
+bool
+SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* table)
+{
+  bool success = true;
+  for(int i = 0; i < table->getEntries().size(); i++)
+  {
+      if(table->getEntries().at(i)->getName() == name)
+      {
+	  success = false;
+	  //std::cerr<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
+	  return success;
+      }
+  }
+  return success;
+}
 
 
 

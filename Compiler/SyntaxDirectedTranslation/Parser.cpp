@@ -488,18 +488,24 @@ Parser::statement ()
   else if(first(Id_For))
   {
       std::string forVar;
-      mCurrentTable->insert("forVar", mCurrentEntry);
-      mCurrentEntry->setKind(kind::Variable);
-      mCurrentEntry->setStructure(structure::Simple);
+      bool newVar = true;
       if(match(Id_For) && match(Opar) && type(forVar))
       {
-	  mCurrentEntry->setName(mLookAhead.getLexeme());
+	  newVar = mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable);
+	  if(newVar)
+	  {
+	      mCurrentTable->insert("forVar", mCurrentEntry);
+	      mCurrentEntry->setName(mLookAhead.getLexeme());
+	      mCurrentEntry->setKind(kind::Variable);
+	      mCurrentEntry->setStructure(structure::Simple);
+	  }
 	  if(match(Id) && assignOp() &&
 	  expr() && match(Semic) && relExpr() && match(Semic) && assignStat()
 	  && match(Cpar) && statBlock() && match(Semic))
 	  {
 	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
-	      mCurrentEntry->setType(forVar);
+	      if(newVar)
+		mCurrentEntry->setType(forVar);
 	  }
 	  else{success = false;}
       }

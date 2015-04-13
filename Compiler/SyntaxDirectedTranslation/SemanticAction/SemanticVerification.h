@@ -26,6 +26,8 @@ public:
   std::string	checkUserType(std::string type, SymbolTable *table, bool& success);
   std::string	checkDoubleDeclaration(std::string name, SymbolTable *table, bool& success);
 
+  bool		checkDoubleDeclaration(std::string name, SymbolTable *table);
+
 
 private:
 
