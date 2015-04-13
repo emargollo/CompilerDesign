@@ -1,0 +1,1459 @@
+class
+Utility
+{
+int
+<type> -> int
+var1
+<typeDef> -> <type>id
+[
+4
+]
+<arraySize> -> [ num(int) ]
+[
+5
+]
+<arraySize> -> [ num(int) ]
+[
+7
+]
+<arraySize> -> [ num(int) ]
+[
+8
+]
+<arraySize> -> [ num(int) ]
+[
+9
+]
+<arraySize> -> [ num(int) ]
+[
+1
+]
+<arraySize> -> [ num(int) ]
+[
+0
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+;
+<varFunc> -> <arraySize*>;
+<varFuncDecl> -> <typeDef><varFunc>
+float
+<type> -> float
+var2
+<typeDef> -> <type>id
+<arraySize*> -> epsilon
+;
+<varFunc> -> <arraySize*>;
+<varFuncDecl> -> <typeDef><varFunc>
+int
+<type> -> int
+findMax
+<typeDef> -> <type>id
+(
+int
+<type> -> int
+array
+[
+100
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+<fParamsTail*> -> epsilon
+<fParams> -> <type>id<arraySize*><fParamsTail*>
+)
+{
+int
+<type> -> int
+maxValue
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+int
+<type> -> int
+idx
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+array
+[
+100
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+//a = b;
+
+<statement> -> <assignStat>;
+for
+(
+int
+<type> -> int
+idx
+=
+<assignOp> -> =
+99
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+;
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+>
+<relOp> -> >
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<relExpr> -> <arithExpr><relOp><arithExpr>
+;
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+-
+<addOp> -> -
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+)
+{
+if
+(
+array
+[
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+>
+<relOp> -> >
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> <relOp><arithExpr>
+<expr> -> <arithExpr><pRel>
+)
+then
+{
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+array
+[
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+}
+<statBlock> -> {<statement*>} 
+else
+{
+<statement*> -> epsilon
+}
+<statBlock> -> {<statement*>} 
+;
+<statement> -> if(<expr>)then<statBlock>else<statBlock>;
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+}
+<statBlock> -> {<statement*>} 
+;
+<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;
+return
+(
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<varFunc> -> ( <fParams> ) <funcBody>;
+<varFuncDecl> -> <typeDef><varFunc>
+int
+<type> -> int
+findMin
+<typeDef> -> <type>id
+(
+int
+<type> -> int
+array
+[
+100
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+,
+float
+<type> -> float
+test
+<arraySize*> -> epsilon
+<fParamsTail> -> ,<type>id<arraySize*>
+<fParamsTail*> -> epsilon
+<fParamsTail*> -> <fParamsTail><fParamsTail*> 
+<fParams> -> <type>id<arraySize*><fParamsTail*>
+)
+{
+int
+<type> -> int
+minValue
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+int
+<type> -> int
+idx
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+array
+[
+100
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+for
+(
+int
+<type> -> int
+idx
+=
+<assignOp> -> =
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+;
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<=
+<relOp> -> <=
+99
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<relExpr> -> <arithExpr><relOp><arithExpr>
+;
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+(
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+)
+{
+if
+(
+array
+[
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<
+<relOp> -> <
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> <relOp><arithExpr>
+<expr> -> <arithExpr><pRel>
+)
+then
+{
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+array
+[
+idx
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+}
+<statBlock> -> {<statement*>} 
+else
+{
+<statement*> -> epsilon
+}
+<statBlock> -> {<statement*>} 
+;
+<statement> -> if(<expr>)then<statBlock>else<statBlock>;
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+}
+<statBlock> -> {<statement*>} 
+;
+<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;
+return
+(
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<varFunc> -> ( <fParams> ) <funcBody>;
+<varFuncDecl> -> <typeDef><varFunc>
+<varFuncDeclx*> -> epsilon
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+}
+;
+<classDecl> -> class id {<varDecl*><funcDef*>};
+<classDecl*> -> epsilon
+<classDecl*> -> <classDecl><classDecl*>
+float
+<type> -> float
+randomize
+(
+<fParams> -> epsilon
+)
+<funcHead>	-> <type>id(<fParams>)
+{
+float
+<type> -> float
+value
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+100
+<factor> -> num
+*
+<multOp> -> *
+(
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+3.0
+<factor>	-> num
+/
+<multOp> -> /
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+1.05
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+(
+(
+2.04
+<factor>	-> num
+*
+<multOp> -> *
+2.47
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
+-
+<addOp> -> -
+3.0
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+return
+(
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<funcDef> -> <funcHead><funcBody>;
+float
+<type> -> float
+randomize2
+(
+<fParams> -> epsilon
+)
+<funcHead>	-> <type>id(<fParams>)
+{
+Utility
+<type> -> id
+u1
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+Utility
+<type> -> id
+u2
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+float
+<type> -> float
+value
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+u1
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+u2
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+100
+<factor> -> num
+*
+<multOp> -> *
+(
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+3.0
+<factor>	-> num
+/
+<multOp> -> /
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+1.05
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+(
+(
+2.04
+<factor>	-> num
+*
+<multOp> -> *
+2.47
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
+-
+<addOp> -> -
+3.0
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+return
+(
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<funcDef> -> <funcHead><funcBody>;
+<funcDef*> -> epsilon
+<funcDef*> -> <funcDef><funcDef*> 
+<funcDef*> -> <funcDef><funcDef*> 
+program
+{
+int
+<type> -> int
+sample
+[
+100
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+;
+<varDecl> -> <type>id<arraySize*>;
+int
+<type> -> int
+idx
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+int
+<type> -> int
+maxValue
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+int
+<type> -> int
+minValue
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+Utility
+<type> -> id
+utility
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+Utility
+<type> -> id
+arrayUtility
+[
+2
+]
+<arraySize> -> [ num(int) ]
+[
+3
+]
+<arraySize> -> [ num(int) ]
+[
+6
+]
+<arraySize> -> [ num(int) ]
+[
+7
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+;
+//int idx						//If uncommented will cause Double Declaration Error.
+
+//Random test;					//If uncommented will cause Undefined Type Error.
+
+//maxValue = sample;			//If uncommented will cause Can't convert error.
+
+//maxValue = idx + sample;		//If uncommented will cause Type Conflict between Array1 and Ints.
+
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+<varDecl*> -> <varDecl><varDecl*> 
+for
+(
+int
+<type> -> int
+t
+=
+<assignOp> -> =
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+;
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<=
+<relOp> -> <=
+100
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<relExpr> -> <arithExpr><relOp><arithExpr>
+;
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+)
+{
+get
+(
+sample
+[
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+)
+;
+<statement> -> get(<variable>);
+sample
+[
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+(
+sample
+[
+t
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+*
+<multOp> -> *
+randomize
+<indice*> -> epsilon
+<idnest*> -> epsilon
+(
+<aParams> -> epsilon
+)
+<varFuncCall> -> (<aParams>)
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<statBlock> -> {<statement*>} 
+;
+//if(idx > a){}					//If uncommented will cause Undefined Variable Error.
+
+<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+utility
+<indice*> -> epsilon
+.
+findMax
+<indice*> -> epsilon
+<idnest> -> id<indice*>.
+<idnest*> -> epsilon
+<idnest*> -> <idnest><idnest*> 
+(
+sample
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<fParamsTail*> -> epsilon
+<aParams> -> <expr><aParamsTail*>
+)
+<varFuncCall> -> (<aParams>)
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+utility
+<indice*> -> epsilon
+.
+findMin
+<indice*> -> epsilon
+<idnest> -> id<indice*>.
+<idnest*> -> epsilon
+<idnest*> -> <idnest><idnest*> 
+(
+sample
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<fParamsTail*> -> epsilon
+<aParams> -> <expr><aParamsTail*>
+)
+<varFuncCall> -> (<aParams>)
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+utility
+<indice*> -> epsilon
+.
+var1
+[
+4
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<idnest> -> id<indice*>.
+<idnest*> -> epsilon
+<idnest*> -> <idnest><idnest*> 
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+10
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+arrayUtility
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+.
+var1
+[
+4
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+1
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+[
+0
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+]
+<indice>	-> [<arithmExpr>]
+<indice*> -> epsilon
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<indice*> -> <indice><indice*> 
+<idnest> -> id<indice*>.
+<idnest*> -> epsilon
+<idnest*> -> <idnest><idnest*> 
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+put
+(
+maxValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> put(<expr>);
+put
+(
+minValue
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> put(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<progBody> -> program<funcBody>;<funcDef*>
+<prog> -> <classDecl*><progBody>
+

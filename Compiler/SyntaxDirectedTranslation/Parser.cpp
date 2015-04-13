@@ -276,7 +276,7 @@ bool
 Parser::progBody ()
 {
   bool success = skipErrors(rule::progBody);
-  if(first(rule::funcDef))
+  if(first(rule::funcDefx))
   {
 
       if(funcDefx()){
@@ -1404,12 +1404,19 @@ Parser::first (rule::Rule_Type rt)
   {
       case rule::prog:
 	if(mLookAhead.getTokenType() == Id_Class
-	    || mLookAhead.getTokenType() == Id_Program)
+	    || mLookAhead.getTokenType() == Id_Program
+	    || mLookAhead.getTokenType() == Id_Int
+	    || mLookAhead.getTokenType() == Id_Float
+	    || mLookAhead.getTokenType() == Id)
 	  return true;
 	break;
       case rule::classDeclx:
 	if(mLookAhead.getTokenType() == Id_Class
-	    || mLookAhead.getTokenType() == epsilon)
+	    || mLookAhead.getTokenType() == epsilon
+	    || mLookAhead.getTokenType() == Id_Program
+	    || mLookAhead.getTokenType() == Id_Int
+	    || mLookAhead.getTokenType() == Id_Float
+	    || mLookAhead.getTokenType() == Id)
 	  return true;
 	break;
       case rule::classDecl:
