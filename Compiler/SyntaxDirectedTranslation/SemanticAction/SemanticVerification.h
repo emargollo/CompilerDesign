@@ -27,6 +27,10 @@ public:
   std::string	checkUserType(std::string type, SymbolTable *table, bool& success);
   std::string	checkDoubleDeclaration(std::string name, SymbolTable *table, bool& success);
 
+  std::string	checkVarInsideNest(std::string nest, std::string name, SymbolTable *table, bool& success);
+
+  void		checkAmountOfIndices(std::string var, int amount, SymbolTable *table, bool& success);
+
   bool		checkDoubleDeclaration(std::string name, SymbolTable *table);
 
 

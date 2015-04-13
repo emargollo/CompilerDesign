@@ -24,7 +24,7 @@ class Utility
 		for( int idx = 1; idx <= 99; idx = ( idx ) + 1)
 		{
 			if(array[idx] < minValue) then {
-				maxValue = array[idx];
+				minValue = array[idx];
 			}else{};
 		};
 		return (minValue);

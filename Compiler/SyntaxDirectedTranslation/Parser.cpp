@@ -760,15 +760,16 @@ Parser::terml (std::string& Fi, std::string& Tls)
 bool
 Parser::factor (std::string& Fs)
 {
-  std::string Es, F2s;
+  std::string Es, F2s, Is;
   bool success = skipErrors(rule::factor);
   if(first(Id))
   {
       std::string id = mLookAhead.getLexeme();
-      if(match(Id) && indicex() &&  idnestx() && varFuncCall())
+      //Fs = mSeV.checkVarType(id, mCurrentTable, success);
+      if(match(Id) && indicex() &&  idnestx(id, Is) && varFuncCall())
       {
 	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
-	  Fs = mSeV.checkVarType(id, mCurrentTable, success);
+	  Fs = Is;
       }
       else{success = false;}
   }
@@ -847,9 +848,11 @@ bool
 Parser::variable ()
 {
   bool success = skipErrors(rule::variable);
+  std::string Is, id;
   if(first(Id))
   {
-      if(match(Id) && indicex() && idnestx())
+      id = mLookAhead.getLexeme();
+      if(match(Id) && indicex() && idnestx(id, Is))
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
 
@@ -861,37 +864,45 @@ Parser::variable ()
 }
 
 bool
-Parser::idnestx ()
+Parser::idnestx (std::string nest, std::string& Ixs)
 {
+  std::string Is, Ix2s;
   bool success = skipErrors(rule::idnestx);
   if(first(rule::idnest))
   {
-      if(idnest() && idnestx())
+      if(idnest(nest, Is) && idnestx(nest, Ix2s))
       {
       mSs<<"<idnest*> -> <idnest><idnest*> "<<std::endl;
-
+      Ixs = Ix2s;
       }
       else{success = false;}
   }
   else if(follow(rule::idnestx))
   {
   mSs<<"<idnest*> -> epsilon"<<std::endl;
-
+    Ixs = mSeV.checkVarType(nest, mCurrentTable, success);;
   }
   else{success = false;}
   return(success);
 }
 
 bool
-Parser::idnest ()
+Parser::idnest (std::string nest, std::string& Is)
 {
+  std::string name;
   bool success = skipErrors(rule::idnest);
   if(first(Dot))
   {
-      if(match(Dot) && match(Id) && indicex())
-      {
-	  mSs<< "<idnest> -> id<indice*>."<<std::endl;
+      if(match(Dot) ){
+	  name = mLookAhead.getLexeme();
+	  if( match(Id) && indicex())
+	  {
+	    Is = mSeV.checkVarInsideNest(nest, name, mCurrentTable, success);
+	    nest = name;
+	    mSs<< "<idnest> -> id<indice*>."<<std::endl;
 
+	  }
+	  else{success = false;}
       }
       else{success = false;}
   }

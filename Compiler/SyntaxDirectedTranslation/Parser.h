@@ -134,11 +134,15 @@ private:
 
   bool		variable();
 
-  bool		idnestx();
-  bool		idnest();
+  bool		idnestx(std::string nest, std::string& Ixs);
+  bool		idnest(std::string nest, std::string& Is);
 
   bool		indicex();
   bool		indice();
+
+  bool		indicex(std::string var, int );
+  bool		indice();
+
   bool		arraySizex();
   bool		arraySize();
   bool		type();

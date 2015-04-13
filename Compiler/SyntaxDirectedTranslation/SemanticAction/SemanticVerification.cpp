@@ -43,6 +43,7 @@ SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& s
   }
   else
   {
+      success = false;
       std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
       return "Variable not found";
   }
@@ -97,6 +98,67 @@ SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* tab
   return success;
 }
 
+std::string
+SemanticVerification::checkVarInsideNest(std::string nest, std::string name, SymbolTable *table, bool& success)
+{
+   std::string type;
+   TableEntry *t, *t2;
+   bool found;
+   table->search(nest, t, found);
+   if(found)
+   {
+       nest = t->getType();
+       table->search(nest, t, found);
+       if(t->getLink() != NULL)
+       {
+	   t->getLink()->search(name, t2, found);
+	   if(found)
+	   {
+	       return t2->getType();
+	   }
+	   else
+	   {
+	       std::cerr<<"Variable not found in Nest: "<< nest<< "."<< name<<std::endl;
+	       return "Variable not found";
+	   }
+       }
+       else
+       {
+	   std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+	   return "Not a nest";
+       }
+
+   }
+   else
+   {
+       std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+       return "Variable not found";
+   }
+}
+
+void
+SemanticVerification::checkAmountOfIndices(std::string var, int amount, SymbolTable *table, bool& success)
+{
+  std::string type;
+  TableEntry *t;
+  bool found;
+  table->search(var, t, found);
+  if(found)
+  {
+      if(t->getDimension().size() == amount)
+      {
+	  return;
+      }
+      else
+      {
+	  std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+      }
+  }
+  else
+  {
+      std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
+  }
+}
 
 
 

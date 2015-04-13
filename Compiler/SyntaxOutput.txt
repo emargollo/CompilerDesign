@@ -473,7 +473,7 @@ minValue
 )
 then
 {
-maxValue
+minValue
 <indice*> -> epsilon
 <idnest*> -> epsilon
 <variable> -> id<indice*><idnest*>
