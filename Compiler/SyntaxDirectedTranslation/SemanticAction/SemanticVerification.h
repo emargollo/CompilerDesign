@@ -24,6 +24,8 @@ public:
   std::string	checkAssignmentTypes(std::string type1, std::string type2, bool& success);
   std::string	checkVarType(std::string var, SymbolTable *table, bool& success);
 
+  std::string	checkAssigTypes(std::string type1, std::string type2, bool& success);
+
   std::string	checkUserType(std::string type, SymbolTable *table, bool& success);
   std::string	checkDoubleDeclaration(std::string name, SymbolTable *table, bool& success);
 

@@ -464,7 +464,7 @@ Parser::statementx ()
 bool
 Parser::statement ()
 {
-  std::string Es, Rs;
+  std::string Es, Rs, Vs;
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -513,7 +513,7 @@ Parser::statement ()
   }
   else if(first(Id_Get))
   {
-      if(match(Id_Get) && match(Opar) && variable() && match(Cpar) && match(Semic))
+      if(match(Id_Get) && match(Opar) && variable(Vs) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> get(<variable>);"<<std::endl;
 
@@ -545,14 +545,14 @@ Parser::statement ()
 bool
 Parser::assignStat ()
 {
-  std::string Es;
+  std::string Es, Vs;
   bool success = skipErrors(rule::assignStat);
   if(first(rule::variable))
   {
-      if(variable() && assignOp() && expr(Es))
+      if(variable(Vs) && assignOp() && expr(Es))
       {
 	  mSs<< "<assignStat> -> <variable><assignOp><expr>"<<std::endl;
-
+	  mSeV.checkAssigTypes(Vs, Es, success);
       }
       else{success = false;}
   }
@@ -591,7 +591,7 @@ Parser::statBlock ()
 }
 
 bool
-Parser::expr (std::string Es)
+Parser::expr (std::string& Es)
 {
   std::string As, Ps;
   bool success = skipErrors(rule::expr);
@@ -845,7 +845,7 @@ Parser::varFuncCall()
 }
 
 bool
-Parser::variable ()
+Parser::variable (std::string& Vs)
 {
   bool success = skipErrors(rule::variable);
   std::string Is, id;
@@ -856,7 +856,7 @@ Parser::variable ()
       if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is))
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
-
+	  Vs = Is;
       }
       else{success = false;}
   }

@@ -58,8 +58,8 @@ program {
 	Utility arrayUtility[2][3][6][7];
 	//int idx						//If uncommented will cause Double Declaration Error.
 	//Random test;					//If uncommented will cause Undefined Type Error.
-	
-	//maxValue = minValue + sample;//If uncommented will cause Type Conflict between Array1 and Ints.
+	//maxValue = sample;			//If uncommented will cause Can't convert error.
+	//maxValue = idx + sample;		//If uncommented will cause Type Conflict between Array1 and Ints.
 	
 	for(int t = 0; t<=100 ; t = t + 1)
 	{

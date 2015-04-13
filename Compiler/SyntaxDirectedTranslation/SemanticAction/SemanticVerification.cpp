@@ -31,6 +31,22 @@ SemanticVerification::checkOperatorTypes (std::string type1, std::string type2, 
 }
 
 std::string
+SemanticVerification::checkAssigTypes (std::string type1, std::string type2, bool& success)
+{
+  if((type1 == "int" || type1 == "float") &&
+      (type2 == "int" || type2 == "float")){
+      return type1;
+  }
+  else if(type1 == type2)
+  {
+      return type1;
+  }
+  std::cerr<<"Can't Convert: "<<type2<< " into: " << type1 <<std::endl;
+  success = false;
+  return "Operation not allowed";
+}
+
+std::string
 SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& success)
 {
   std::string type;
@@ -158,7 +174,7 @@ SemanticVerification::checkAmountOfIndices(std::string var, int amount, SymbolTa
       {
 	  //std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
 	  std::stringstream ss;
-	  ss<<"array"<< t->getDimension().size()-amount;
+	  ss<<"array"<< t->getDimensions();
 	  return ss.str();
       }
   }

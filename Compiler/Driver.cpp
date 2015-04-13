@@ -21,34 +21,11 @@ Driver::~Driver ()
 void
 Driver::runDriver (bool toFile, bool errorFile)
 {
-/*  mLex.setFile("example.txt");	//Driver to run the lexical analyzer
-  Token tk;
-  std::ofstream tkFile;
-  std::ofstream erFile;
-  if(toFile){
 
-    tkFile.open ("Tokens.txt");
-  }
-  if(errorFile)
-  {
-
-      erFile.open ("errorFile.txt");
-  }
-  while(tk.getTokenType() != Eof){
-    tk = mLex.nextToken();
-    std::cout<< tk.toString();
-    if(toFile)
-    {
-      tkFile << tk.toString();
-    }
-    if(errorFile && tk.getTokenType() == Invalid)
-    {
-	erFile << "Invalid token: " << tk.toString();
-    }
-  }
-  tkFile.close();
-  erFile.close();*/
-  bool t = mParser.parse("example.txt", true);	//Driver to run parser.
+  std::string filename;
+  std::cout<< "Which file would you like to compile?"<<std::endl;
+  std::cin >> filename;
+  bool t = mParser.parse(filename, true);	//Driver to run parser.
   if(t)
   {
       std::cout<<"Success!"<<std::endl;

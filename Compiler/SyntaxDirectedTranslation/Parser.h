@@ -118,7 +118,7 @@ private:
   bool		statement();
   bool		assignStat();
   bool		statBlock();
-  bool		expr(std::string Es);
+  bool		expr(std::string& Es);
 
   bool		pRel(std::string& Ai, std::string& Ps);
 
@@ -132,7 +132,7 @@ private:
 
   bool		varFuncCall();
 
-  bool		variable();
+  bool		variable(std::string& Vs);
 
   bool		idnestx(std::string nest, std::string& Ixs);
   bool		idnest(std::string nest, std::string& Is);
