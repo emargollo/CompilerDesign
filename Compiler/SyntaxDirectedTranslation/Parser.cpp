@@ -276,18 +276,17 @@ bool
 Parser::progBody ()
 {
   bool success = skipErrors(rule::progBody);
-  if(first(Id_Program))
+  if(first(rule::funcDef))
   {
-      mCurrentTable->insert("Program", mCurrentEntry);
 
-      createTable("Program");
-
-      mCurrentEntry->setKind(kind::Function);
-      mCurrentEntry->setStructure(structure::Simple);
-      mCurrentEntry->setType(mLookAhead.getLexeme());
-      mCurrentEntry->setLink(mCurrentTable);
-      if(match(Id_Program) && funcBody() && match(Semic) ){
-	  if(funcDefx())
+      if(funcDefx()){
+	  mCurrentTable->insert("Program", mCurrentEntry);
+	  createTable("Program");
+	  mCurrentEntry->setKind(kind::Function);
+	  mCurrentEntry->setStructure(structure::Simple);
+	  mCurrentEntry->setType(mLookAhead.getLexeme());
+	  mCurrentEntry->setLink(mCurrentTable);
+	  if(match(Id_Program) && funcBody() && match(Semic) )
 	  {
 	      mSs<< "<progBody> -> program<funcBody>;<funcDef*>" << std::endl;
 
@@ -465,7 +464,7 @@ Parser::statementx ()
 bool
 Parser::statement ()
 {
-  std::string Es;
+  std::string Es, Rs;
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -501,7 +500,7 @@ Parser::statement ()
 	      mCurrentEntry->setStructure(structure::Simple);
 	  }
 	  if(match(Id) && assignOp() &&
-	  expr(Es) && match(Semic) && relExpr() && match(Semic) && assignStat()
+	  expr(Es) && match(Semic) && relExpr(Rs) && match(Semic) && assignStat()
 	  && match(Cpar) && statBlock() && match(Semic))
 	  {
 	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
@@ -592,24 +591,6 @@ Parser::statBlock ()
 }
 
 bool
-Parser::expr ()
-{
-  bool success = skipErrors(rule::expr);
-  if(first(rule::arithExpr))
-  {
-      if(arithExpr() && pRel())
-      {
-	  mSs<< "<expr> -> <arithExpr><pRel>" <<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-
-bool
 Parser::expr (std::string Es)
 {
   std::string As, Ps;
@@ -622,28 +603,6 @@ Parser::expr (std::string Es)
 	  Es = Ps;
       }
       else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
-Parser::pRel ()
-{
-  bool success = skipErrors(rule::pRel);
-  if(first(rule::relOp))
-  {
-      if(relOp() && arithExpr())
-      {
-	  mSs<< "<pRel> -> <relOp><arithExpr>" <<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(follow(rule::pRel))
-  {
-      mSs<< "<pRel> -> epsilon" <<std::endl;
-
   }
   else{success = false;}
   return(success);
@@ -673,23 +632,6 @@ Parser::pRel (std::string& Ai, std::string& Ps)
 }
 
 bool
-Parser::relExpr ()
-{
-  bool success = skipErrors(rule::relExpr);
-  if(first(rule::arithExpr))
-  {
-      if(arithExpr() && relOp() && arithExpr())
-      {
-	  mSs<< "<relExpr> -> <arithExpr><relOp><arithExpr>" <<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
 Parser::relExpr (std::string Rs)
 {
   std::string A1s, A2s;
@@ -700,23 +642,6 @@ Parser::relExpr (std::string Rs)
       {
 	  mSs<< "<relExpr> -> <arithExpr><relOp><arithExpr>" <<std::endl;
 	  mSeV.checkOperatorTypes(A1s, A2s, success);
-      }
-      else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
-Parser::arithExpr ()
-{
-  bool success = skipErrors(rule::arithExpr);
-  if(first(rule::term))
-  {
-      if(term() && arithExprl())
-      {
-	  mSs<< "<arithExpr> -> <term><arithExpr'>"<<std::endl;
-
       }
       else{success = false;}
   }
@@ -737,28 +662,6 @@ Parser::arithExpr (std::string& As)
 	  As = Als;
       }
       else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
-Parser::arithExprl ()
-{
-  bool success = skipErrors(rule::arithExprl);
-  if(first(rule::addOp))
-  {
-      if(addOp() && term() && arithExprl())
-      {
-	  mSs<< "<arithExpr'> -> <addOp><term><arithExpr'>" <<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(follow(rule::arithExprl))
-  {
-      mSs<< "<arithExpr'> -> epsilon" <<std::endl;
-
   }
   else{success = false;}
   return(success);
@@ -814,23 +717,6 @@ Parser::sign ()
 }
 
 bool
-Parser::term ()
-{
-  bool success = skipErrors(rule::term);
-  if(first(rule::factor))
-  {
-      if(factor() && terml())
-      {
-	  mSs<< "<term> -> <factor><term'>"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
 Parser::term (std::string& Ts)
 {
   std::string Fs, Tls;
@@ -843,29 +729,6 @@ Parser::term (std::string& Ts)
 	  Ts = Tls;
       }
       else{success = false;}
-  }
-  else{success = false;}
-  return(success);
-}
-
-
-bool
-Parser::terml ()
-{
-  bool success = skipErrors(rule::terml);
-  if(first(rule::multOp))
-  {
-      if(multOp() && factor() && terml())
-      {
-	  mSs<< "<term'> -> <multOp><factor><term'>" <<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(follow(rule::terml))
-  {
-      mSs<< "<term'> -> epsilon" <<std::endl;
-
   }
   else{success = false;}
   return(success);
@@ -889,68 +752,6 @@ Parser::terml (std::string& Fi, std::string& Tls)
   {
       mSs<< "<term'> -> epsilon" <<std::endl;
       Tls = Fi;
-  }
-  else{success = false;}
-  return(success);
-}
-
-bool
-Parser::factor ()
-{
-  bool success = skipErrors(rule::factor);
-  if(first(Id))
-  {
-      if(match(Id) && indicex() &&  idnestx() && varFuncCall())
-      {
-	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(first(Float))
-  {
-      if(match(Float))
-      {
-	  mSs<< "<factor>	-> num"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(first(Int))
-  {
-      if(match(Int))
-      {
-	mSs<< "<factor> -> num"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(first(Opar))
-  {
-      if(match(Opar) && arithExpr() && match(Cpar)	)
-      {
-	mSs<< "<factor> -> (<arithExpr>)"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(first(Id_Not))
-  {
-      if(match(Id_Not) && factor())
-      {
-	mSs<< "<factor> -> not<factor>"<<std::endl;
-
-      }
-      else{success = false;}
-  }
-  else if(rule::sign)
-  {
-      if(sign() && factor())
-      {
-      	mSs<< "<factor> -> <sign><factor>"<<std::endl;
-
-      }
-      else{success = false;}
   }
   else{success = false;}
   return(success);
@@ -1606,11 +1407,16 @@ Parser::first (rule::Rule_Type rt)
       	  return true;
       	break;
       case rule::progBody:
-	if(mLookAhead.getTokenType() == Id_Program)
+	if(mLookAhead.getTokenType() == Id_Program
+	    ||mLookAhead.getTokenType() == Id_Int
+	    || mLookAhead.getTokenType() == epsilon
+	    || mLookAhead.getTokenType() == Id_Float
+	    || mLookAhead.getTokenType() == Id)
 	  return true;
 	break;
       case rule::funcDefx:
-	if(mLookAhead.getTokenType() == Id_Int
+	if(mLookAhead.getTokenType() == Id_Program
+	    ||mLookAhead.getTokenType() == Id_Int
 	    || mLookAhead.getTokenType() == epsilon
 	    || mLookAhead.getTokenType() == Id_Float
 	    || mLookAhead.getTokenType() == Id)
@@ -1877,12 +1683,20 @@ Parser::follow (rule::Rule_Type rt)
 	    return true;
 	  break;
         case rule::classDeclx:
-          if(mLookAhead.getTokenType() == Id_Program)
+          if(mLookAhead.getTokenType() == Id_Int
+	      || mLookAhead.getTokenType() == Id_Float
+	      || mLookAhead.getTokenType() == Id
+	      || mLookAhead.getTokenType() == Eof
+	      || mLookAhead.getTokenType() == Id_Program)
 	    return true;
 	  break;
         case rule::classDecl:
           if(mLookAhead.getTokenType() == Id_Class
-              || mLookAhead.getTokenType() == Id_Program)
+              ||mLookAhead.getTokenType() == Id_Int
+	      || mLookAhead.getTokenType() == Id_Float
+	      || mLookAhead.getTokenType() == Id
+	      || mLookAhead.getTokenType() == Eof
+	      || mLookAhead.getTokenType() == Id_Program)
 	    return true;
 	  break;
         case rule::varFuncDeclx:
@@ -1914,14 +1728,16 @@ Parser::follow (rule::Rule_Type rt)
 	    return true;
 	  break;
         case rule::funcDefx:
-          if(mLookAhead.getTokenType() == Eof)
+          if(mLookAhead.getTokenType() == Eof
+	    || mLookAhead.getTokenType() == Id_Program)
 	    return true;
 	  break;
         case rule::funcDef:
           if(mLookAhead.getTokenType() == Id_Int
 	      || mLookAhead.getTokenType() == Id_Float
 	      || mLookAhead.getTokenType() == Id
-	      || mLookAhead.getTokenType() == Eof)
+	      || mLookAhead.getTokenType() == Eof
+	      || mLookAhead.getTokenType() == Id_Program)
 	    return true;
 	  break;
         case rule::funcHead:

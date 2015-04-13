@@ -118,24 +118,16 @@ private:
   bool		statement();
   bool		assignStat();
   bool		statBlock();
-  bool		expr();
   bool		expr(std::string Es);
 
-  bool		pRel();
   bool		pRel(std::string& Ai, std::string& Ps);
 
-  bool		relExpr();
   bool		relExpr(std::string Rs);
-  bool		arithExpr();
   bool		arithExpr(std::string& As);
-  bool		arithExprl();
   bool		arithExprl(std::string& Ti, std::string& Als);
   bool		sign();
-  bool		term();
   bool		term(std::string& Ts);
-  bool		terml();
   bool		terml(std::string& Fi, std::string& Tls);
-  bool		factor();
   bool		factor(std::string& Fs);
 
   bool		varFuncCall();
