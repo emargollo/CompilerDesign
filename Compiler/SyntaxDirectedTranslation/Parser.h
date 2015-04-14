@@ -120,17 +120,17 @@ private:
   bool		statement(std::string& Sr);
   bool		assignStat();
   bool		statBlock(std::string& Hr);
-  bool		expr(std::string& Es);
+  bool		expr(std::string& Es, std::string Eid);
 
-  bool		pRel(std::string& Ai, std::string& Ps);
+  bool		pRel(std::string& Ai, std::string& Ps, std::string& Aidi, std::string& Pid);
 
-  bool		relExpr(std::string Rs);
-  bool		arithExpr(std::string& As);
-  bool		arithExprl(std::string& Ti, std::string& Als);
+  bool		relExpr(std::string& Rs, std::string& Rid);
+  bool		arithExpr(std::string& As, std::string& Aid);
+  bool		arithExprl(std::string& Ti, std::string& Als, std::string& Tidi, std::string& Alid);
   bool		sign();
-  bool		term(std::string& Ts);
-  bool		terml(std::string& Fi, std::string& Tls);
-  bool		factor(std::string& Fs);
+  bool		term(std::string& Ts, std::string& Tids);
+  bool		terml(std::string& Fi, std::string& Tls, std::string& Fidi, std::string& Tlid);
+  bool		factor(std::string& Fs, std::string& Fids);
 
   bool		varFuncCall(std::string id, std::string nest);
 
@@ -154,9 +154,9 @@ private:
   bool		aParamsTailx();
   bool		aParamsTail();
   bool		assignOp();
-  bool		relOp();
-  bool		addOp();
-  bool		multOp();
+  bool		relOp(std::string& Op);
+  bool		addOp(std::string& Op);
+  bool		multOp(std::string& Op);
 
   bool		first(Token_Type tt);
   bool		first(rule::Rule_Type rt);

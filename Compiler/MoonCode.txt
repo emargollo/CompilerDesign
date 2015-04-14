@@ -1,19 +1,15 @@
-Utilityvar1	res	10080
-Utilityvar2	dw	0
-Utility_findMaxmaxValue	dw	0
-Utility_findMaxidx	dw	0
-Utility_findMinminValue	dw	0
-Utility_findMinidx	dw	0
-Randutility	res	10286
-randomizevalue	dw	0
-randomize2u1	res	10286
-randomize2u2	res	10286
-randomize2value	dw	0
 entry
-Programsample	res	100
-Programidx	dw	0
-ProgrammaxValue	dw	0
-ProgramminValue	dw	0
-Programutility	res	10286
-Programrand	res	10286
-ProgramarrayUtility	res	10286
+Programa	dw	0
+Programb	dw	0
+Programc	dw	0
+Programd	res	15
+lw r1,Programb(r0)
+lw r2,Programc(r0)
+mul r3,r1,r2
+t1	dw	0
+sw t1(r0),r3
+lw r1,Programa(r0)
+lw r2,t1(r0)
+add r3,r1,r2
+t2	dw	0
+sw t2(r0),r3

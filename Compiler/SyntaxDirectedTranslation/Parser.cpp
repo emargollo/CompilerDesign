@@ -474,7 +474,7 @@ Parser::statementx (std::string& Sxr)
 bool
 Parser::statement (std::string& Sr)
 {
-  std::string Es, Rs, Vs;
+  std::string Es, Rs, Vs, Rid, Eid;
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -487,7 +487,7 @@ Parser::statement (std::string& Sr)
   }
   else if(first(Id_If))
   {
-      if(match(Id_If) && match(Opar) && expr(Es) && match(Cpar) && match(Id_Then)
+      if(match(Id_If) && match(Opar) && expr(Es, Eid) && match(Cpar) && match(Id_Then)
 	  && statBlock(Sr) && match(Id_Else) && statBlock(Sr) && match(Semic))
       {
 	  mSs<< "<statement> -> if(<expr>)then<statBlock>else<statBlock>;"<<std::endl;
@@ -510,7 +510,7 @@ Parser::statement (std::string& Sr)
 	      mCurrentEntry->setStructure(structure::Simple);
 	  }
 	  if(match(Id) && assignOp() &&
-	  expr(Es) && match(Semic) && relExpr(Rs) && match(Semic) && assignStat()
+	  expr(Es, Eid) && match(Semic) && relExpr(Rs, Rid) && match(Semic) && assignStat()
 	  && match(Cpar) && statBlock(Sr) && match(Semic))
 	  {
 	      mSs<< "<statement> -> for(<type>id<assignOp><expr>;<relExpr>;<assignStat>)<statBlock>;"<<std::endl;
@@ -532,7 +532,7 @@ Parser::statement (std::string& Sr)
   }
   else if(first(Id_Put))
   {
-      if(match(Id_Put) && match(Opar) && expr(Es) && match(Cpar) && match(Semic))
+      if(match(Id_Put) && match(Opar) && expr(Es, Eid) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> put(<expr>);"<<std::endl;
 
@@ -541,7 +541,7 @@ Parser::statement (std::string& Sr)
   }
   else if(first(Id_Return))
   {
-      if(match(Id_Return) && match(Opar) && expr(Es) && match(Cpar) && match(Semic))
+      if(match(Id_Return) && match(Opar) && expr(Es, Eid) && match(Cpar) && match(Semic))
       {
 	  mSeV.checkReturnType(Sr, Es, success);
 	  mSs<< "<statement> -> return(<expr>);"<<std::endl;
@@ -556,14 +556,15 @@ Parser::statement (std::string& Sr)
 bool
 Parser::assignStat ()
 {
-  std::string Es, Vs;
+  std::string Es, Vs, Eid;
   bool success = skipErrors(rule::assignStat);
   if(first(rule::variable))
   {
-      if(variable(Vs) && assignOp() && expr(Es))
+      if(variable(Vs) && assignOp() && expr(Es, Eid))
       {
 	  mSs<< "<assignStat> -> <variable><assignOp><expr>"<<std::endl;
 	  mSeV.checkAssigTypes(Vs, Es, success);
+	  //TODO: Add AssigOP.
       }
       else{success = false;}
   }
@@ -602,16 +603,17 @@ Parser::statBlock (std::string& Hr)
 }
 
 bool
-Parser::expr (std::string& Es)
+Parser::expr (std::string& Es, std::string Eid)
 {
-  std::string As, Ps;
+  std::string As, Ps, Aid, Pid;
   bool success = skipErrors(rule::expr);
   if(first(rule::arithExpr))
   {
-      if(arithExpr(As) && pRel(As, Ps))
+      if(arithExpr(As, Aid) && pRel(As, Ps, Aid, Pid))
       {
 	  mSs<< "<expr> -> <arithExpr><pRel>" <<std::endl;
 	  Es = Ps;
+	  Eid = Pid;
       }
       else{success = false;}
   }
@@ -620,16 +622,17 @@ Parser::expr (std::string& Es)
 }
 
 bool
-Parser::pRel (std::string& Ai, std::string& Ps)
+Parser::pRel (std::string& Ai, std::string& Ps, std::string& Aidi, std::string& Pid)
 {
-  std::string As;
+  std::string As, Aid, Op;
   bool success = skipErrors(rule::pRel);
   if(first(rule::relOp))
   {
-      if(relOp() && arithExpr(As))
+      if(relOp(Op) && arithExpr(As, Aid))
       {
 	  mSs<< "<pRel> -> <relOp><arithExpr>" <<std::endl;
 	  Ps = mSeV.checkOperatorTypes(Ai, As, success);
+	  //TODO: Add RelOpGenerator Pid
       }
       else{success = false;}
   }
@@ -637,22 +640,24 @@ Parser::pRel (std::string& Ai, std::string& Ps)
   {
       mSs<< "<pRel> -> epsilon" <<std::endl;
       Ps = Ai;
+      Pid = Aidi;
   }
   else{success = false;}
   return(success);
 }
 
 bool
-Parser::relExpr (std::string Rs)
+Parser::relExpr (std::string& Rs, std::string& Rid)
 {
-  std::string A1s, A2s;
+  std::string A1s, A2s, Aid1, Aid2, Op;
   bool success = skipErrors(rule::relExpr);
   if(first(rule::arithExpr))
   {
-      if(arithExpr(A1s) && relOp() && arithExpr(A2s))
+      if(arithExpr(A1s, Aid1) && relOp(Op) && arithExpr(A2s, Aid2))
       {
 	  mSs<< "<relExpr> -> <arithExpr><relOp><arithExpr>" <<std::endl;
 	  mSeV.checkOperatorTypes(A1s, A2s, success);
+	  //TODO: Add RelOpGenerator
       }
       else{success = false;}
   }
@@ -661,16 +666,17 @@ Parser::relExpr (std::string Rs)
 }
 
 bool
-Parser::arithExpr (std::string& As)
+Parser::arithExpr (std::string& As, std::string& Aid)
 {
-  std::string Ts, Als;
+  std::string Ts, Als, Tid, Alid;
   bool success = skipErrors(rule::arithExpr);
   if(first(rule::term))
   {
-      if(term(Ts) && arithExprl(Ts, Als))
+      if(term(Ts, Tid) && arithExprl(Ts, Als, Tid, Alid))
       {
 	  mSs<< "<arithExpr> -> <term><arithExpr'>"<<std::endl;
 	  As = Als;
+	  Aid = Alid;
       }
       else{success = false;}
   }
@@ -679,16 +685,18 @@ Parser::arithExpr (std::string& As)
 }
 
 bool
-Parser::arithExprl (std::string& Ti, std::string& Als)
+Parser::arithExprl (std::string& Ti, std::string& Als, std::string& Tidi, std::string& Alid)
 {
-  std::string Ts, Al2s;
+  std::string Ts, Al2s, Tid, Alid2, Op;
   bool success = skipErrors(rule::arithExprl);
   if(first(rule::addOp))
   {
-      if(addOp() && term(Ts) && arithExprl(Ts, Al2s))
+      if(addOp(Op) && term(Ts, Tid) && arithExprl(Ts, Al2s, Tid, Alid2))
       {
 	  mSs<< "<arithExpr'> -> <addOp><term><arithExpr'>" <<std::endl;
 	  Als = mSeV.checkOperatorTypes(Ti, Al2s, success);
+	  //TODO: Add ARITHGen Alid
+	  Alid = mMoon.generateArithOp(Tidi, Alid2, mCurrentEntry, mCurrentTable, Op);
       }
       else{success = false;}
   }
@@ -696,6 +704,7 @@ Parser::arithExprl (std::string& Ti, std::string& Als)
   {
       mSs<< "<arithExpr'> -> epsilon" <<std::endl;
       Als = Ti;
+      Alid = Tidi;
   }
   else{success = false;}
   return(success);
@@ -728,16 +737,17 @@ Parser::sign ()
 }
 
 bool
-Parser::term (std::string& Ts)
+Parser::term (std::string& Ts, std::string& Tids)
 {
-  std::string Fs, Tls;
+  std::string Fs, Tls, Fid, Tlid;
   bool success = skipErrors(rule::term);
   if(first(rule::factor))
   {
-      if(factor(Fs) && terml(Fs, Tls))
+      if(factor(Fs, Fid) && terml(Fs, Tls, Fid, Tlid))
       {
 	  mSs<< "<term> -> <factor><term'>"<<std::endl;
 	  Ts = Tls;
+	  Tids = Tlid;
       }
       else{success = false;}
   }
@@ -746,16 +756,19 @@ Parser::term (std::string& Ts)
 }
 
 bool
-Parser::terml (std::string& Fi, std::string& Tls)
+Parser::terml (std::string& Fi, std::string& Tls, std::string& Fidi, std::string& Tlid)
 {
-  std::string Fs, Tl2s;
+  std::string Fs, Tl2s, Fids, Tlid2, Op;
   bool success = skipErrors(rule::terml);
   if(first(rule::multOp))
   {
-      if(multOp() && factor(Fs) && terml(Fs, Tl2s))
+      if(multOp(Op) && factor(Fs, Fids) && terml(Fs, Tl2s, Fids, Tlid2))
       {
 	  mSs<< "<term'> -> <multOp><factor><term'>" <<std::endl;
 	  Tls = mSeV.checkOperatorTypes(Fi, Tl2s, success);
+	  //TODO: CALL ArithGenerator. Tlid
+	  std::cout<<Fidi<<std::endl;
+	  Tlid = mMoon.generateArithOp(Fidi, Tlid2, mCurrentEntry, mCurrentTable, Op);
       }
       else{success = false;}
   }
@@ -763,15 +776,16 @@ Parser::terml (std::string& Fi, std::string& Tls)
   {
       mSs<< "<term'> -> epsilon" <<std::endl;
       Tls = Fi;
+      Tlid = Fidi;
   }
   else{success = false;}
   return(success);
 }
 
 bool
-Parser::factor (std::string& Fs)
+Parser::factor (std::string& Fs, std::string& Fids)
 {
-  std::string Es, F2s, Is;
+  std::string Es, F2s, Is, Fid2s, Eid;
   std::string nest = "null";
   int amount = 0;
   bool success = skipErrors(rule::factor);
@@ -782,6 +796,7 @@ Parser::factor (std::string& Fs)
       {
 	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
 	  Fs = Is;
+	  Fids = id;
       }
       else{success = false;}
   }
@@ -805,16 +820,17 @@ Parser::factor (std::string& Fs)
   }
   else if(first(Opar))
   {
-      if(match(Opar) && arithExpr(Es) && match(Cpar)	)
+      if(match(Opar) && arithExpr(Es, Eid) && match(Cpar)	)
       {
 	mSs<< "<factor> -> (<arithExpr>)"<<std::endl;
 	Fs = Es;
+	Fids = Eid;
       }
       else{success = false;}
   }
   else if(first(Id_Not))
   {
-      if(match(Id_Not) && factor(F2s))
+      if(match(Id_Not) && factor(F2s, Fid2s))
       {
 	mSs<< "<factor> -> not<factor>"<<std::endl;
 	Fs = F2s;
@@ -823,7 +839,7 @@ Parser::factor (std::string& Fs)
   }
   else if(rule::sign)
   {
-      if(sign() && factor(F2s))
+      if(sign() && factor(F2s, Fid2s))
       {
       	mSs<< "<factor> -> <sign><factor>"<<std::endl;
       	Fs = F2s;
@@ -972,11 +988,11 @@ Parser::indicex (std::string nest, std::string& Is, std::string& var, int& amoun
 bool
 Parser::indice (std::string& Is, int& amount)
 {
-  std::string As;
+  std::string As, Aid;
   bool success = skipErrors(rule::indice);
   if(first(Obra))
   {
-      if(match(Obra) && arithExpr(As) && match(Cbra))
+      if(match(Obra) && arithExpr(As, Aid) && match(Cbra))
       {
 	  mSs<< "<indice>	-> [<arithmExpr>]"<<std::endl;
 	  mSeV.checkOperatorTypes(As, "int", success);
@@ -1141,13 +1157,13 @@ Parser::fParams ()
 bool
 Parser::aParams (std::string id, std::string nest)
 {
-  std::string Es;
+  std::string Es, Eid;
   std::vector<std::string> VSp;
   bool success = skipErrors(rule::aParams);
   if(first(rule::expr))
   {
 
-      if(expr(Es) && aParamsTailx())
+      if(expr(Es, Eid) && aParamsTailx())
       {
 	  mSs<< "<aParams> -> <expr><aParamsTail*>"<<std::endl;
 
@@ -1241,11 +1257,11 @@ Parser::aParamsTailx ()
 bool
 Parser::aParamsTail ()
 {
-  std::string Es;
+  std::string Es, Eid;
   bool success = skipErrors(rule::aParamsTail);
   if(first(Com))
   {
-      if(match(Com) && expr(Es))
+      if(match(Com) && expr(Es, Eid))
       {
 	  mSs<< "<aParamsTail> -> ,<expr>"<<std::endl;
 
@@ -1274,8 +1290,9 @@ Parser::assignOp ()
 }
 
 bool
-Parser::relOp ()
+Parser::relOp (std::string& Op)
 {
+  Op = mLookAhead.getLexeme();
   bool success = skipErrors(rule::relOp);
   if(first(Equal))
   {
@@ -1336,8 +1353,9 @@ Parser::relOp ()
 }
 
 bool
-Parser::addOp ()
+Parser::addOp (std::string& Op)
 {
+  Op = mLookAhead.getLexeme();
   bool success = skipErrors(rule::addOp);
   if(first(Plus))
   {
@@ -1371,8 +1389,9 @@ Parser::addOp ()
 }
 
 bool
-Parser::multOp ()
+Parser::multOp (std::string& Op)
 {
+  Op = mLookAhead.getLexeme();
   bool success = skipErrors(rule::multOp);
   if(first(Mult))
   {
