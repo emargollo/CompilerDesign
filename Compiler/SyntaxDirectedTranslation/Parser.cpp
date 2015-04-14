@@ -52,6 +52,9 @@ Parser::parse (std::string fileName, bool output)
     myfile.open("SymbolTables.txt");
     myfile<<mTableHead->print();
     myfile.close();
+    myfile.open("MoonCode.txt");
+    myfile<<mMoon.getCode();
+    myfile.close();
   }
   //std::cout<<mTableHead->print();
   std::cout<<mMoon.getCode();

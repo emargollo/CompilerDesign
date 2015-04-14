@@ -93,9 +93,58 @@ SemanticTranslation::calculateSize(TableEntry *&entry, SymbolTable* table)
   return 0;
 }
 
+std::string
+SemanticTranslation::generateArithOp(std::string var1, std::string var2, TableEntry*& entry , SymbolTable* table, std::string op)
+{
+  std::string a, b;
+  TableEntry *t;
+  bool found;
+  if(op == "+"|| op == "-"|| op == "*"|| op == "/")
+  {
+      table->search("var1", t, found);
+      a = t->getAddress();
+      table->search("var2", t, found);
+      b = t->getAddress();
+      mMoonCode<<"lw r1,"<<a<<"(r0)\n";
+      mMoonCode<<"lw r2,"<<b<<"(r0)\n";
+      mMoonCode<<generateOperator(op)<<"r3,r1,r2\n";
+      generateTemporaryVar(entry, table);
+      mMoonCode<<entry->getAddress()<<"\t dw 0\n";
+      mMoonCode<<"sw "<<entry->getAddress()<<"(r0),r3\n";
+  }
+  return entry->getName();
+}
+
+std::string
+SemanticTranslation::generateOperator(std::string op)
+{
+  return "add ";
+}
+
 
 std::string
 SemanticTranslation::getCode ()
 {
   return mMoonCode.str();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

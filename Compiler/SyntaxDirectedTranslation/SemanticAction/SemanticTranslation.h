@@ -26,6 +26,9 @@ public:
   void  	generateVariableDeclaration(TableEntry *&entry, SymbolTable* table);
   int		calculateSize(TableEntry *&entry, SymbolTable* table);
 
+  std::string	generateArithOp(std::string var1, std::string var2, TableEntry*& entry , SymbolTable* table, std::string op);
+  std::string	generateOperator(std::string op);
+
   std::string	getCode();
 
 private:
