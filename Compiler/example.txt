@@ -31,6 +31,11 @@ class Utility
 	};
 };
 
+class Rand
+{
+	Utility utility;
+};
+
 float randomize()
 {
 	float value;
@@ -38,7 +43,7 @@ float randomize()
 	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
 	return (value);
 }; 
-float randomize2()
+float randomize2(int a)
 {
 	Utility u1;
 	Utility u2;
@@ -47,6 +52,7 @@ float randomize2()
 	value = 100 * (2 + 3.0 / 7.0006);
 	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
 	//return (u1);					//If uncommented will cause return type error.
+	value = randomize2(2);
 	return(value);
 }; 
 
@@ -56,11 +62,16 @@ program {
 	int maxValue;
 	int minValue;
 	Utility utility;
+	Rand rand;
 	Utility arrayUtility[2][3][6][7];
 	//int idx						//If uncommented will cause Double Declaration Error.
 	//Random test;					//If uncommented will cause Undefined Type Error.
 	//maxValue = sample;			//If uncommented will cause Can't convert error.
 	//maxValue = idx + sample;		//If uncommented will cause Type Conflict between Array1 and Ints.
+	//idx = randomize2();			//If uncommented will cause Incorrect amout of parameters
+	//idx = utility.findMax();		//If uncommented will cause Incorrect amout of parameters
+	
+	idx = rand.utility.findMax(sample);
 	
 	for(int t = 0; t<=100 ; t = t + 1)
 	{

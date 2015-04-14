@@ -63,11 +63,37 @@ SemanticVerification::checkReturnType(std::string decl, std::string ret, bool& s
 }
 
 std::string
-SemanticVerification::checkParameters(std::string decl, std::vector<std::string> call, SymbolTable* table, bool& success)
+SemanticVerification::checkParameters(std::string decl, std::string nest, std::vector<std::string> call, SymbolTable* table, bool& success)
 {
   std::string type;
   TableEntry *t;
   bool found;
+  if(nest != "null")
+  {
+      table->search(nest, t, found);
+      if(found)
+      {
+	  nest = t->getType();
+	  table->search(nest, t, found);
+	  if(t->getLink() != NULL)
+	  {
+	      table = t->getLink();
+	  }
+	  else
+	  {
+	    success = false;
+	    std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+	    return "Not a Nest";
+	  }
+      }
+      else
+      {
+          success = false;
+          std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+          return "Function Nest not found";
+      }
+
+  }
   table->search(decl, t, found);
   if(found)
   {

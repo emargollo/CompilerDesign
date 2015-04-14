@@ -28,7 +28,7 @@ public:
 
   std::string	checkReturnType(std::string decl, std::string ret, bool& success);
 
-  std::string	checkParameters(std::string decl, std::vector<std::string> call, SymbolTable* table, bool& success);
+  std::string	checkParameters(std::string decl, std::string nest, std::vector<std::string> call, SymbolTable* table, bool& success);
 
   std::string	checkUserType(std::string type, SymbolTable *table, bool& success);
   std::string	checkDoubleDeclaration(std::string name, SymbolTable *table, bool& success);

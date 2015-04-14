@@ -130,12 +130,12 @@ private:
   bool		terml(std::string& Fi, std::string& Tls);
   bool		factor(std::string& Fs);
 
-  bool		varFuncCall();
+  bool		varFuncCall(std::string id, std::string nest);
 
   bool		variable(std::string& Vs);
 
-  bool		idnestx(std::string nest, std::string& Ixs);
-  bool		idnest(std::string nest, std::string& Is);
+  bool		idnestx(std::string& nest, std::string& Ii, std::string& Ixs, std::string& n);
+  bool		idnest(std::string& nest, std::string& Is, std::string& n);
 
   bool		indicex(std::string& Is, std::string& var, int& amount);
   bool		indicex(std::string nest, std::string& Is, std::string& var, int& amount);
@@ -146,7 +146,7 @@ private:
   bool		type();
   bool		type(std::string &type);
   bool		fParams();
-  bool		aParams();
+  bool		aParams(std::string id, std::string nest);
   bool		fParamsTailx();
   bool		fParamsTail();
   bool		aParamsTailx();

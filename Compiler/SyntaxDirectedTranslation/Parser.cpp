@@ -766,12 +766,13 @@ bool
 Parser::factor (std::string& Fs)
 {
   std::string Es, F2s, Is;
+  std::string nest = "null";
   int amount = 0;
   bool success = skipErrors(rule::factor);
   if(first(Id))
   {
       std::string id = mLookAhead.getLexeme();
-      if(match(Id) && indicex(Is, id, amount) &&  idnestx(id, Is) && varFuncCall())
+      if(match(Id) && indicex(Is, id, amount) &&  idnestx(id, Is, Is, nest) && varFuncCall(id, nest))
       {
 	  mSs<< "<factor>	-> id<idnest*><varFuncCall>"<<std::endl;
 	  Fs = Is;
@@ -828,12 +829,12 @@ Parser::factor (std::string& Fs)
 }
 
 bool
-Parser::varFuncCall()
+Parser::varFuncCall(std::string id, std::string nest)
 {
   bool success = skipErrors(rule::varFuncCall);
   if(first(Opar))
   {
-      if(match(Opar) && aParams() && match(Cpar))
+      if(match(Opar) && aParams(id, nest) && match(Cpar))
       {
 	mSs<< "<varFuncCall> -> (<aParams>)"<<std::endl;
 
@@ -853,12 +854,12 @@ bool
 Parser::variable (std::string& Vs)
 {
   bool success = skipErrors(rule::variable);
-  std::string Is, id;
+  std::string Is, id, n;
   int amount = 0;
   if(first(Id))
   {
       id = mLookAhead.getLexeme();
-      if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is))
+      if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is, Is, n))
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
 	  Vs = Is;
@@ -870,29 +871,30 @@ Parser::variable (std::string& Vs)
 }
 
 bool
-Parser::idnestx (std::string nest, std::string& Ixs)
+Parser::idnestx (std::string &nest,std::string& Ii, std::string& Ixs, std::string& n)
 {
   std::string Is, Ix2s;
   bool success = skipErrors(rule::idnestx);
   if(first(rule::idnest))
   {
-      if(idnest(nest, Is) && idnestx(nest, Ix2s))
+      if(idnest(nest, Is, n) && idnestx(nest, Is, Ix2s, n))
       {
       mSs<<"<idnest*> -> <idnest><idnest*> "<<std::endl;
-      Ixs = Is;
+      Ixs = Ix2s;
       }
       else{success = false;}
   }
   else if(follow(rule::idnestx))
   {
       mSs<<"<idnest*> -> epsilon"<<std::endl;
+      Ixs = Ii;
   }
   else{success = false;}
   return(success);
 }
 
 bool
-Parser::idnest (std::string nest, std::string& Is)
+Parser::idnest (std::string& nest, std::string& Is, std::string& n)
 {
   std::string name;
   int amount = 0;
@@ -904,6 +906,7 @@ Parser::idnest (std::string nest, std::string& Is)
 	  if( match(Id) && indicex(nest, Is, name, amount))
 	  {
 	    Is = mSeV.checkVarInsideNest(nest, name, mCurrentTable, success);
+	    n = nest;
 	    nest = name;
 	    mSs<< "<idnest> -> id<indice*>."<<std::endl;
 
@@ -1130,12 +1133,14 @@ Parser::fParams ()
 }
 
 bool
-Parser::aParams ()
+Parser::aParams (std::string id, std::string nest)
 {
   std::string Es;
+  std::vector<std::string> VSp;
   bool success = skipErrors(rule::aParams);
   if(first(rule::expr))
   {
+
       if(expr(Es) && aParamsTailx())
       {
 	  mSs<< "<aParams> -> <expr><aParamsTail*>"<<std::endl;
@@ -1146,7 +1151,7 @@ Parser::aParams ()
   else if(follow(rule::aParams))
   {
       mSs<< "<aParams> -> epsilon"<<std::endl;
-
+      mSeV.checkParameters(id, nest, VSp, mCurrentTable, success);
   }
   else{success = false;}
   return(success);
