@@ -135,7 +135,7 @@ private:
 
   bool		varFuncCall(std::string id, std::string nest);
 
-  bool		variable(std::string& Vs, std::string & Vid);
+  bool		variable(std::string& Vs, std::string & Vid, std::string& nest);
 
   bool		idnestx(std::string& nest, std::string& Ii, std::string& Ixs, std::string& n);
   bool		idnest(std::string& nest, std::string& Is, std::string& n);

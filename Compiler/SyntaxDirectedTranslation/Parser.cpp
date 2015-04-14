@@ -57,7 +57,7 @@ Parser::parse (std::string fileName, bool output)
     myfile.close();
   }
   //std::cout<<mTableHead->print();
-  std::cout<<mMoon.getCode();
+  //std::cout<<mMoon.getCode();
   return success;
 }
 
@@ -475,6 +475,7 @@ bool
 Parser::statement (std::string& Sr)
 {
   std::string Es, Rs, Vs, Rid, Eid, Vid;
+  std::string nest = "null";
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -508,6 +509,7 @@ Parser::statement (std::string& Sr)
 	      mCurrentEntry->setName(mLookAhead.getLexeme());
 	      mCurrentEntry->setKind(kind::Variable);
 	      mCurrentEntry->setStructure(structure::Simple);
+	      mMoon.generateVariableDeclaration(mCurrentEntry, mCurrentTable);
 	  }
 	  if(match(Id) && assignOp() &&
 	  expr(Es, Eid) && match(Semic) && relExpr(Rs, Rid) && match(Semic) && assignStat()
@@ -523,7 +525,7 @@ Parser::statement (std::string& Sr)
   }
   else if(first(Id_Get))
   {
-      if(match(Id_Get) && match(Opar) && variable(Vs, Vid) && match(Cpar) && match(Semic))
+      if(match(Id_Get) && match(Opar) && variable(Vs, Vid, nest) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> get(<variable>);"<<std::endl;
 
@@ -557,10 +559,11 @@ bool
 Parser::assignStat ()
 {
   std::string Es, Vs, Eid, Vid;
+  std::string nest = "null";
   bool success = skipErrors(rule::assignStat);
   if(first(rule::variable))
   {
-      if(variable(Vs, Vid) && assignOp() && expr(Es, Eid))
+      if(variable(Vs, Vid, nest) && assignOp() && expr(Es, Eid))
       {
 	  mSs<< "<assignStat> -> <variable><assignOp><expr>"<<std::endl;
 	  mSeV.checkAssigTypes(Vs, Es, success);
@@ -613,7 +616,7 @@ Parser::expr (std::string& Es, std::string& Eid)
       {
 	  mSs<< "<expr> -> <arithExpr><pRel>" <<std::endl;
 	  Es = Ps;
-	  Eid = Pid;
+	  Eid = Pid;//cout
       }
       else{success = false;}
   }
@@ -767,7 +770,7 @@ Parser::terml (std::string& Fi, std::string& Tls, std::string& Fidi, std::string
 	  mSs<< "<term'> -> <multOp><factor><term'>" <<std::endl;
 	  Tls = mSeV.checkOperatorTypes(Fi, Tl2s, success);
 	  //TODO: CALL ArithGenerator. Tlid
-	  std::cout<<Fidi<<std::endl;
+	  //std::cout<<Fidi<<std::endl;
 	  Tlid = mMoon.generateArithOp(Fidi, Tlid2, mCurrentEntry, mCurrentTable, Op);
       }
       else{success = false;}
@@ -881,7 +884,7 @@ Parser::varFuncCall(std::string id, std::string nest)
 }
 
 bool
-Parser::variable (std::string& Vs, std::string & Vid)
+Parser::variable (std::string& Vs, std::string & Vid, std::string& nest)
 {
   bool success = skipErrors(rule::variable);
   std::string Is, id, n;
@@ -889,7 +892,7 @@ Parser::variable (std::string& Vs, std::string & Vid)
   if(first(Id))
   {
       id = mLookAhead.getLexeme();
-      if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is, Is, n))
+      if(match(Id) && indicex(Is, id, amount) && idnestx(id, Is, Is, nest))
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
 	  Vs = Is;

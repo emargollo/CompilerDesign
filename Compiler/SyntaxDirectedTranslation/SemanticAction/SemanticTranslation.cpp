@@ -64,7 +64,6 @@ SemanticTranslation::generateVariableDeclaration (TableEntry *&entry, SymbolTabl
 int
 SemanticTranslation::calculateSize(TableEntry *&entry, SymbolTable* table)
 {
-//  std::cout<<type<<std::endl;
   if((entry->getType() == "int" || entry->getType() == "float") && entry->getKind() != kind::Function)
   {
     return 1*entry->getDimensions();
@@ -96,6 +95,9 @@ SemanticTranslation::calculateSize(TableEntry *&entry, SymbolTable* table)
 std::string
 SemanticTranslation::generateArithOp(std::string var1, std::string var2, TableEntry*& entry , SymbolTable* table, std::string op)
 {
+ // std::cout<<"Var1: "<<var1<<std::endl;
+//  std::cout<<"Var2: "<<var2<<std::endl;
+
   std::string a, b;
   TableEntry *t;
   bool found;
@@ -105,6 +107,7 @@ SemanticTranslation::generateArithOp(std::string var1, std::string var2, TableEn
       a = t->getAddress();
       table->search(var2, t, found);
       b = t->getAddress();
+      //std::cout<<"Ok"<<std::endl;
       mMoonCode<<"lw r1,"<<a<<"(r0)\n";
       mMoonCode<<"lw r2,"<<b<<"(r0)\n";
       mMoonCode<<generateOperator(op)<<"r3,r1,r2\n";
@@ -131,6 +134,8 @@ SemanticTranslation::generateOperator(std::string op)
 void
 SemanticTranslation::generateAssigOp(std::string var1, std::string var2, SymbolTable* table)
 {
+  // std::cout<<"Var1: "<<var1<<std::endl;
+  // std::cout<<"Var2: "<<var2<<std::endl;
   std::string a, b;
   TableEntry *t;
   bool found;
@@ -139,6 +144,7 @@ SemanticTranslation::generateAssigOp(std::string var1, std::string var2, SymbolT
   a = t->getAddress();
   table->search(var2, t, found);
   b = t->getAddress();
+  //std::cout<<"OK"<<std::endl;
   mMoonCode<<"lw r1,"<<b<<"(r0)\n";
   mMoonCode<<"sw "<<a<<"(r0),r1\n";
 }

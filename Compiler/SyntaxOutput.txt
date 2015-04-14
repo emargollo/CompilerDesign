@@ -1,5 +1,200 @@
+class
+Rand
+{
+int
+<type> -> int
+var1
+<typeDef> -> <type>id
+[
+4
+]
+<arraySize> -> [ num(int) ]
+[
+5
+]
+<arraySize> -> [ num(int) ]
+[
+7
+]
+<arraySize> -> [ num(int) ]
+[
+8
+]
+<arraySize> -> [ num(int) ]
+[
+9
+]
+<arraySize> -> [ num(int) ]
+[
+1
+]
+<arraySize> -> [ num(int) ]
+<arraySize*> -> epsilon
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+<arraySize*> -> <arraySize><arraySize*> 
+;
+<varFunc> -> <arraySize*>;
+<varFuncDecl> -> <typeDef><varFunc>
+float
+<type> -> float
+utility
+<typeDef> -> <type>id
+<arraySize*> -> epsilon
+;
+<varFunc> -> <arraySize*>;
+<varFuncDecl> -> <typeDef><varFunc>
+<varFuncDeclx*> -> epsilon
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+<varFuncDeclx*> -> <varFuncDeclx><varFuncDeclx*>
+}
+;
+<classDecl> -> class id {<varDecl*><funcDef*>};
 <classDecl*> -> epsilon
+<classDecl*> -> <classDecl><classDecl*>
+float
+<type> -> float
+randomize
+(
+<fParams> -> epsilon
+)
+<funcHead>	-> <type>id(<fParams>)
+{
+float
+<type> -> float
+value
+<arraySize*> -> epsilon
+;
+<varDecl> -> <type>id<arraySize*>;
+<varDecl*> -> epsilon
+<varDecl*> -> <varDecl><varDecl*> 
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+100
+<factor> -> num
+*
+<multOp> -> *
+(
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+3.0
+<factor>	-> num
+/
+<multOp> -> /
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+1.05
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+(
+(
+2.04
+<factor>	-> num
+*
+<multOp> -> *
+2.47
+<factor>	-> num
+<term'> -> epsilon
+<term'> -> <multOp><factor><term'>
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
+-
+<addOp> -> -
+3.0
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+)
+<factor> -> (<arithExpr>)
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+7.0006
+<factor>	-> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
+return
+(
+value
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+)
+;
+<statement> -> return(<expr>);
+<statement*> -> epsilon
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+<statement*> -> <statement><statement*> 
+}
+<funcBody> -> {<varDecl*><statement*>}
+;
+<funcDef> -> <funcHead><funcBody>;
 <funcDef*> -> epsilon
+<funcDef*> -> <funcDef><funcDef*> 
 program
 {
 int
@@ -100,6 +295,8 @@ b
 <expr> -> <arithExpr><pRel>
 <assignStat> -> <variable><assignOp><expr>
 ;
+/*for(int t = 0; t<=100 ; t = t + 1)
+
 <statement> -> <assignStat>;
 <statement*> -> epsilon
 <statement*> -> <statement><statement*> 

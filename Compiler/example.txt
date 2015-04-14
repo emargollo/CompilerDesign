@@ -82,9 +82,9 @@ program {
 	//if(idx > a){}					//If uncommented will cause Undefined Variable Error.
 	maxValue = utility.findMax(sample);
 	minValue = utility.findMin(sample);
-	utility.var1[4][1][0][0][0][0][0] = 10;
-	arrayUtility[1][1][1][1].var1[4][1][0][0][0][0][0]
-	= 2;
+	///minValue = utility.var1[4][1][0][0][0][0][0];
+	//utility.var1[4][1][0][0][0][0][0] = 10;
+	//arrayUtility[1][1][1][1].var1[4][1][0][0][0][0][0] = 2;
 	put(maxValue);
 	put(minValue);
 };

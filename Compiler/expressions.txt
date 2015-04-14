@@ -1,3 +1,17 @@
+class Rand
+{
+	int var1[4][5][7][8][9][1];
+	float utility;
+};
+
+float randomize()
+{
+	float value;
+	value = 100 * (2 + 3.0 / 7.0006);
+	value = 1.05 + ((2.04 * 2.47) - 3.0) + 7.0006 ;
+	return (value);
+}; 
+
 program {
 	int a;
 	int b;
@@ -6,5 +20,12 @@ program {
 	
 	a = a+b*c;
 	a = b + 2;
+	
+	/*for(int t = 0; t<=100 ; t = t + 1)
+	{
+		get(d[t]);
+		d[t] = (d[t] * randomize());
+	};*/
+	
 };
 

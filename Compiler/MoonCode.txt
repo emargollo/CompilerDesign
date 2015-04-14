@@ -1,3 +1,81 @@
+Randvar1	res	10080
+Randutility	dw	0
+randomizevalue	dw	0
+t1	dw	0
+sub r1,r1,r1
+addi r1,r1,100
+sw t1(r0),r1
+t2	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t2(r0),r1
+t3	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t3(r0),r1
+t4	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t4(r0),r1
+lw r1,t3(r0)
+lw r2,t4(r0)
+div r3,r1,r2
+t5	dw	0
+sw t5(r0),r3
+lw r1,t2(r0)
+lw r2,t5(r0)
+add r3,r1,r2
+t6	dw	0
+sw t6(r0),r3
+lw r1,t1(r0)
+lw r2,t6(r0)
+mul r3,r1,r2
+t7	dw	0
+sw t7(r0),r3
+lw r1,t7(r0)
+sw randomizevalue(r0),r1
+t8	dw	0
+sub r1,r1,r1
+addi r1,r1,1
+sw t8(r0),r1
+t9	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t9(r0),r1
+t10	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t10(r0),r1
+lw r1,t9(r0)
+lw r2,t10(r0)
+mul r3,r1,r2
+t11	dw	0
+sw t11(r0),r3
+t12	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t12(r0),r1
+lw r1,t11(r0)
+lw r2,t12(r0)
+sub r3,r1,r2
+t13	dw	0
+sw t13(r0),r3
+t14	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t14(r0),r1
+lw r1,t13(r0)
+lw r2,t14(r0)
+add r3,r1,r2
+t15	dw	0
+sw t15(r0),r3
+lw r1,t8(r0)
+lw r2,t15(r0)
+add r3,r1,r2
+t16	dw	0
+sw t16(r0),r3
+lw r1,t16(r0)
+sw randomizevalue(r0),r1
 entry
 Programa	dw	0
 Programb	dw	0
@@ -6,23 +84,23 @@ Programd	res	15
 lw r1,Programb(r0)
 lw r2,Programc(r0)
 mul r3,r1,r2
-t1	dw	0
-sw t1(r0),r3
+t17	dw	0
+sw t17(r0),r3
 lw r1,Programa(r0)
-lw r2,t1(r0)
+lw r2,t17(r0)
 add r3,r1,r2
-t2	dw	0
-sw t2(r0),r3
-lw r1,t2(r0)
+t18	dw	0
+sw t18(r0),r3
+lw r1,t18(r0)
 sw Programa(r0),r1
-t3	dw	0
+t19	dw	0
 sub r1,r1,r1
 addi r1,r1,2
-sw t3(r0),r1
+sw t19(r0),r1
 lw r1,Programb(r0)
-lw r2,t3(r0)
+lw r2,t19(r0)
 add r3,r1,r2
-t4	dw	0
-sw t4(r0),r3
-lw r1,t4(r0)
+t20	dw	0
+sw t20(r0),r3
+lw r1,t20(r0)
 sw Programa(r0),r1
