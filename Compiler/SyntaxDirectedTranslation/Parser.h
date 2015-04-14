@@ -86,8 +86,10 @@ private:
   Token				mPeek;
   LexicalAnalyzer 		mLex;
   SemanticVerification		mSeV;
+  SemanticTranslation		mMoon;
   std::stringstream		mSs;
   std::stringstream		mTs;
+  std::stringstream		mMoonCode;
   SymbolTable*			mTableHead;
 
   SymbolTable*			mCurrentTable;

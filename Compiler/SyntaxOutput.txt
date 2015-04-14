@@ -29,12 +29,7 @@ var1
 1
 ]
 <arraySize> -> [ num(int) ]
-[
-0
-]
-<arraySize> -> [ num(int) ]
 <arraySize*> -> epsilon
-<arraySize*> -> <arraySize><arraySize*> 
 <arraySize*> -> <arraySize><arraySize*> 
 <arraySize*> -> <arraySize><arraySize*> 
 <arraySize*> -> <arraySize><arraySize*> 

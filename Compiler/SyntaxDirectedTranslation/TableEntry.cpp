@@ -16,7 +16,7 @@ TableEntry::TableEntry ()
 TableEntry::TableEntry (std::string name)
 {
   mName = name;
-  mAddress = 0;
+  mLabel = " ";
   mKind = kind::Variable;
   mType = "int";
   mStructure = structure::Simple;
@@ -29,9 +29,9 @@ TableEntry::~TableEntry ()
 }
 
 void
-TableEntry::setAddress (int address)
+TableEntry::setAddress (std::string label)
 {
-  mAddress = address;
+  mLabel = label;
 }
 
 void
@@ -81,10 +81,10 @@ TableEntry::getDimensions ()
   return d;
 }
 
-int
+std::string
 TableEntry::getAddress ()
 {
-  return mAddress;
+  return mLabel;
 }
 
 std::vector<int>

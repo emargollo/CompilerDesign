@@ -36,7 +36,7 @@ public:
   TableEntry(std::string name);
   virtual
   ~TableEntry ();
-  void  setAddress (int address);
+  void  setAddress (std::string labe);
   void  setKind (kind::kind kind);
   void  setLink (SymbolTable* link);
   void  setName (std::string n);
@@ -46,7 +46,7 @@ public:
   void	addParameter(std::string param);
 
   int				getDimensions();
-  int  				getAddress ();
+  std::string  				getAddress ();
   std::vector<int>  		getDimension ();
   kind::kind  			getKind ();
   SymbolTable*  		getLink ();
@@ -64,7 +64,7 @@ private:
   kind::kind			mKind;
   structure::structure		mStructure;
   std::vector<int>		mDimension;
-  int				mAddress;
+  std::string			mLabel;
   SymbolTable* 			mLink;
 
   std::string			kindToString(kind::kind);

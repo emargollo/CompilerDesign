@@ -53,8 +53,8 @@ Parser::parse (std::string fileName, bool output)
     myfile<<mTableHead->print();
     myfile.close();
   }
-  std::cout<<mTableHead->print();
-
+  //std::cout<<mTableHead->print();
+  std::cout<<mMoon.getCode();
   return success;
 }
 
@@ -249,6 +249,7 @@ Parser::varFunc (std::string& Tr)
       mCurrentEntry->setStructure(structure::Simple);
       if(arraySizex() && match(Semic))
       {
+	mMoon.generateVariableDeclaration(mCurrentEntry, mCurrentTable);
 	mSs<< "<varFunc> -> <arraySize*>;"<<std::endl;
 
       }
@@ -256,7 +257,7 @@ Parser::varFunc (std::string& Tr)
   }
   else if(first(Opar))
   {
-      createTable(std::string(mCurrentTable->getName() + ":" + mCurrentEntry->getName()));
+      createTable(std::string(mCurrentTable->getName() + "_" + mCurrentEntry->getName()));
 
       mCurrentEntry->setKind(kind::Function);
       mCurrentEntry->setStructure(structure::Simple);
@@ -289,6 +290,7 @@ Parser::progBody ()
 	  mCurrentEntry->setStructure(structure::Simple);
 	  mCurrentEntry->setType(mLookAhead.getLexeme());
 	  mCurrentEntry->setLink(mCurrentTable);
+	  mMoon.generateEntryDirective();
 	  if(match(Id_Program) && funcBody(Fr) && match(Semic) )
 	  {
 	      mSs<< "<progBody> -> program<funcBody>;<funcDef*>" << std::endl;
@@ -422,16 +424,17 @@ Parser::varDecl ()
   bool success = skipErrors(rule::varDecl);
   if(first(rule::type))
   {
-      std::string varDeclTC;
+      std::string varDeclTC, varID;
       mCurrentTable->insert("variable", mCurrentEntry);
-      //mCurrentEntry->setType(mLookAhead.getLexeme());
       mCurrentEntry->setKind(kind::Variable);
       mCurrentEntry->setStructure(structure::Simple);
       if(type(varDeclTC) ){
 	  mCurrentEntry->setType(varDeclTC);
-	  mCurrentEntry->setName(mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success));
+	  varID = mSeV.checkDoubleDeclaration(mLookAhead.getLexeme(), mCurrentTable, success);
+	  mCurrentEntry->setName(varID);
 	  if(match(Id) && arraySizex() && match(Semic))
 	  {
+	      mMoon.generateVariableDeclaration(mCurrentEntry, mCurrentTable);
 	      mSs<< "<varDecl> -> <type>id<arraySize*>;"<<std::endl;
 
 	  }

@@ -6,17 +6,17 @@ Entry: [Name: randomize2, Type:float, Kind: Function, Structure: Simple, Paramet
 Entry: [Name: Program, Type:program, Kind: Function, Structure: Simple, Parameters: [ ], Dimensions:  , Link: Program]
 }
 Table: Utility{
-Entry: [Name: var1, Type:int, Kind: Variable, Structure: Array, Parameters: [ ], Dimensions:  [4], [5], [7], [8], [9], [1], [0], , Link: -]
+Entry: [Name: var1, Type:int, Kind: Variable, Structure: Array, Parameters: [ ], Dimensions:  [4], [5], [7], [8], [9], [1], , Link: -]
 Entry: [Name: var2, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
-Entry: [Name: findMax, Type:int, Kind: Function, Structure: Simple, Parameters: [ int, ], Dimensions:  , Link: Utility:findMax]
-Entry: [Name: findMin, Type:int, Kind: Function, Structure: Simple, Parameters: [ int, float, ], Dimensions:  , Link: Utility:findMin]
+Entry: [Name: findMax, Type:int, Kind: Function, Structure: Simple, Parameters: [ int, ], Dimensions:  , Link: Utility_findMax]
+Entry: [Name: findMin, Type:int, Kind: Function, Structure: Simple, Parameters: [ int, float, ], Dimensions:  , Link: Utility_findMin]
 }
-Table: Utility:findMax{
+Table: Utility_findMax{
 Entry: [Name: array, Type:int, Kind: Parameter, Structure: Array, Parameters: [ ], Dimensions:  [100], , Link: -]
 Entry: [Name: maxValue, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: idx, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }
-Table: Utility:findMin{
+Table: Utility_findMin{
 Entry: [Name: array, Type:int, Kind: Parameter, Structure: Array, Parameters: [ ], Dimensions:  [100], , Link: -]
 Entry: [Name: test, Type:float, Kind: Parameter, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: minValue, Type:int, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
