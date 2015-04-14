@@ -128,6 +128,30 @@ SemanticTranslation::generateOperator(std::string op)
   return "add ";
 }
 
+void
+SemanticTranslation::generateAssigOp(std::string var1, std::string var2, SymbolTable* table)
+{
+  std::string a, b;
+  TableEntry *t;
+  bool found;
+
+  table->search(var1, t, found);
+  a = t->getAddress();
+  table->search(var2, t, found);
+  b = t->getAddress();
+  mMoonCode<<"lw r1,"<<b<<"(r0)\n";
+  mMoonCode<<"sw "<<a<<"(r0),r1\n";
+}
+
+std::string
+SemanticTranslation::generateAssigOp(int var2, TableEntry*& entry, SymbolTable* table)
+{
+  generateTemporaryVar(entry, table);
+  mMoonCode<<"sub r1,r1,r1\n";
+  mMoonCode<<"addi r1,r1,"<<var2<<"\n";
+  mMoonCode<<"sw "<<entry->getAddress()<<"(r0),r1\n";
+  return entry->getName();
+}
 
 std::string
 SemanticTranslation::getCode ()

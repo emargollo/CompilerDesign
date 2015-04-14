@@ -74,7 +74,35 @@ c
 <assignStat> -> <variable><assignOp><expr>
 ;
 <statement> -> <assignStat>;
+a
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<variable> -> id<indice*><idnest*>
+=
+<assignOp> -> =
+b
+<indice*> -> epsilon
+<idnest*> -> epsilon
+<varFuncCall> -> epsilon
+<factor>	-> id<idnest*><varFuncCall>
+<term'> -> epsilon
+<term> -> <factor><term'>
++
+<addOp> -> +
+2
+<factor> -> num
+<term'> -> epsilon
+<term> -> <factor><term'>
+<arithExpr'> -> epsilon
+<arithExpr'> -> <addOp><term><arithExpr'>
+<arithExpr> -> <term><arithExpr'>
+<pRel> -> epsilon
+<expr> -> <arithExpr><pRel>
+<assignStat> -> <variable><assignOp><expr>
+;
+<statement> -> <assignStat>;
 <statement*> -> epsilon
+<statement*> -> <statement><statement*> 
 <statement*> -> <statement><statement*> 
 }
 <funcBody> -> {<varDecl*><statement*>}

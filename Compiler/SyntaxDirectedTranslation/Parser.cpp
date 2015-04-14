@@ -474,7 +474,7 @@ Parser::statementx (std::string& Sxr)
 bool
 Parser::statement (std::string& Sr)
 {
-  std::string Es, Rs, Vs, Rid, Eid;
+  std::string Es, Rs, Vs, Rid, Eid, Vid;
   bool success = skipErrors(rule::statement);
   if(first(rule::assignStat))
   {
@@ -523,7 +523,7 @@ Parser::statement (std::string& Sr)
   }
   else if(first(Id_Get))
   {
-      if(match(Id_Get) && match(Opar) && variable(Vs) && match(Cpar) && match(Semic))
+      if(match(Id_Get) && match(Opar) && variable(Vs, Vid) && match(Cpar) && match(Semic))
       {
 	  mSs<< "<statement> -> get(<variable>);"<<std::endl;
 
@@ -556,15 +556,15 @@ Parser::statement (std::string& Sr)
 bool
 Parser::assignStat ()
 {
-  std::string Es, Vs, Eid;
+  std::string Es, Vs, Eid, Vid;
   bool success = skipErrors(rule::assignStat);
   if(first(rule::variable))
   {
-      if(variable(Vs) && assignOp() && expr(Es, Eid))
+      if(variable(Vs, Vid) && assignOp() && expr(Es, Eid))
       {
 	  mSs<< "<assignStat> -> <variable><assignOp><expr>"<<std::endl;
 	  mSeV.checkAssigTypes(Vs, Es, success);
-	  //TODO: Add AssigOP.
+	  mMoon.generateAssigOp(Vid, Eid, mCurrentTable);
       }
       else{success = false;}
   }
@@ -603,7 +603,7 @@ Parser::statBlock (std::string& Hr)
 }
 
 bool
-Parser::expr (std::string& Es, std::string Eid)
+Parser::expr (std::string& Es, std::string& Eid)
 {
   std::string As, Ps, Aid, Pid;
   bool success = skipErrors(rule::expr);
@@ -802,19 +802,23 @@ Parser::factor (std::string& Fs, std::string& Fids)
   }
   else if(first(Float))
   {
+      std::string f = mLookAhead.getLexeme();
       if(match(Float))
       {
 	  mSs<< "<factor>	-> num"<<std::endl;
 	  Fs = "float";
+	  Fids = mMoon.generateAssigOp(atoi(f.c_str()), mCurrentEntry, mCurrentTable);
       }
       else{success = false;}
   }
   else if(first(Int))
   {
+      std::string i = mLookAhead.getLexeme();
       if(match(Int))
       {
 	mSs<< "<factor> -> num"<<std::endl;
 	Fs = "int";
+	Fids = mMoon.generateAssigOp(atoi(i.c_str()), mCurrentEntry, mCurrentTable);
       }
       else{success = false;}
   }
@@ -834,6 +838,8 @@ Parser::factor (std::string& Fs, std::string& Fids)
       {
 	mSs<< "<factor> -> not<factor>"<<std::endl;
 	Fs = F2s;
+	Fids = Fid2s;
+	//TODO: Apply NOT
       }
       else{success = false;}
   }
@@ -843,6 +849,8 @@ Parser::factor (std::string& Fs, std::string& Fids)
       {
       	mSs<< "<factor> -> <sign><factor>"<<std::endl;
       	Fs = F2s;
+      	Fids = Fid2s;
+      	//TODO: Apply inversion of sign
       }
       else{success = false;}
   }
@@ -873,7 +881,7 @@ Parser::varFuncCall(std::string id, std::string nest)
 }
 
 bool
-Parser::variable (std::string& Vs)
+Parser::variable (std::string& Vs, std::string & Vid)
 {
   bool success = skipErrors(rule::variable);
   std::string Is, id, n;
@@ -885,6 +893,7 @@ Parser::variable (std::string& Vs)
       {
 	  mSs<< "<variable> -> id<indice*><idnest*>"<<std::endl;
 	  Vs = Is;
+	  Vid = id;
       }
       else{success = false;}
   }

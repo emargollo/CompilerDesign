@@ -8,4 +8,6 @@ Entry: [Name: c, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ],
 Entry: [Name: d, Type:int, Kind: Variable, Structure: Array, Parameters: [ ], Dimensions:  [15], , Link: -]
 Entry: [Name: t1, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 Entry: [Name: t2, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
+Entry: [Name: t3, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
+Entry: [Name: t4, Type:float, Kind: Variable, Structure: Simple, Parameters: [ ], Dimensions:  , Link: -]
 }

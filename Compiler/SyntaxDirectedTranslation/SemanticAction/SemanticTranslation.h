@@ -29,6 +29,9 @@ public:
   std::string	generateArithOp(std::string var1, std::string var2, TableEntry*& entry , SymbolTable* table, std::string op);
   std::string	generateOperator(std::string op);
 
+  void		generateAssigOp(std::string var1, std::string var2, SymbolTable* table);
+  std::string	generateAssigOp(int var2, TableEntry*& entry, SymbolTable* table);
+
   std::string	getCode();
 
 private:

@@ -16,6 +16,7 @@
 #include <fstream>
 #include <sstream>
 #include <math.h>
+#include <string>
 #include <stdlib.h>
 
 namespace rule{
@@ -120,7 +121,7 @@ private:
   bool		statement(std::string& Sr);
   bool		assignStat();
   bool		statBlock(std::string& Hr);
-  bool		expr(std::string& Es, std::string Eid);
+  bool		expr(std::string& Es, std::string& Eid);
 
   bool		pRel(std::string& Ai, std::string& Ps, std::string& Aidi, std::string& Pid);
 
@@ -134,7 +135,7 @@ private:
 
   bool		varFuncCall(std::string id, std::string nest);
 
-  bool		variable(std::string& Vs);
+  bool		variable(std::string& Vs, std::string & Vid);
 
   bool		idnestx(std::string& nest, std::string& Ii, std::string& Ixs, std::string& n);
   bool		idnest(std::string& nest, std::string& Is, std::string& n);
