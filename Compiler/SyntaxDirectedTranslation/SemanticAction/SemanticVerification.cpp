@@ -25,7 +25,7 @@ SemanticVerification::checkOperatorTypes (std::string type1, std::string type2, 
       (type2 == "int" || type2 == "float")){
       return "float";
   }
-  std::cerr<<"Operations between: "<<type1<< " and: " << type2<< " are not allowed"<<std::endl;
+  mError<<"Operations between: "<<type1<< " and: " << type2<< " are not allowed"<<std::endl;
   success = false;
   return "Operation not allowed";
 }
@@ -41,7 +41,7 @@ SemanticVerification::checkAssigTypes (std::string type1, std::string type2, boo
   {
       return type1;
   }
-  std::cerr<<"Can't Convert: "<<type2<< " into: " << type1 <<std::endl;
+  mError<<"Can't Convert: "<<type2<< " into: " << type1 <<std::endl;
   success = false;
   return "Operation not allowed";
 }
@@ -57,7 +57,7 @@ SemanticVerification::checkReturnType(std::string decl, std::string ret, bool& s
   {
       return decl;
   }
-  std::cerr<<"Can't Return: "<<ret<< " in a : " << decl << " Function" <<std::endl;
+  mError<<"Can't Return: "<<ret<< " in a : " << decl << " Function" <<std::endl;
   success = false;
   return "Operation not allowed";
 }
@@ -82,14 +82,14 @@ SemanticVerification::checkParameters(std::string decl, std::string nest, std::v
 	  else
 	  {
 	    success = false;
-	    std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+	    mError<<"Use of Variable as a Nest: "<<nest<<std::endl;
 	    return "Not a Nest";
 	  }
       }
       else
       {
           success = false;
-          std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+          mError<<"Use of Nest not Declared: "<<nest<<std::endl;
           return "Function Nest not found";
       }
 
@@ -101,21 +101,22 @@ SemanticVerification::checkParameters(std::string decl, std::string nest, std::v
       {
 	  for(int i = 0; i < call.size(); i++)
 	  {
-	      checkAssigTypes(t->getParameters().at(i), call.at(i), success);
+	      bool check;
+	      checkAssigTypes(checkAmountOfIndices(t->getLink()->getEntries().at(i)->getName(), 0, t->getLink(), check), call.at(i), success);
 	  }
 	  return "All parameters are correct";
       }
       else
       {
 	  success = false;
-	  std::cerr<<"Incorrect amout of Parameters for function: "<<decl<<std::endl;
+	  mError<<"Incorrect amout of Parameters for function: "<<decl<<std::endl;
 	  return "Incorrect amout of Parameter";
       }
   }
   else
   {
       success = false;
-      std::cerr<<"Use of Function not Declared: "<<decl<<std::endl;
+      mError<<"Use of Function not Declared: "<<decl<<std::endl;
       return "Variable not found";
   }
 
@@ -136,7 +137,7 @@ SemanticVerification::checkVarType (std::string var, SymbolTable* table, bool& s
   else
   {
       success = false;
-      std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
+      mError<<"Use of Variable not Declared: "<<var<<std::endl;
       return "Variable not found";
   }
 }
@@ -154,7 +155,7 @@ SemanticVerification::checkUserType (std::string type, SymbolTable* table, bool&
 	  return type;
       }
   }
-  std::cerr<<"Undefined User Type used."<<std::endl;
+  mError<<"Undefined User Type used."<<std::endl;
   success = false;
   return "Undefined Type";
 }
@@ -167,7 +168,7 @@ SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* tab
       if(table->getEntries().at(i)->getName() == name)
       {
 	  success = false;
-	  std::cerr<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
+	  mError<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
 	  return "Multiple Declaration";
       }
   }
@@ -183,7 +184,7 @@ SemanticVerification::checkDoubleDeclaration (std::string name, SymbolTable* tab
       if(table->getEntries().at(i)->getName() == name)
       {
 	  success = false;
-	  //std::cerr<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
+	  //mError<<"Multiple Declared identifier: "<<table->getEntries().at(i)->getName()<<" at Scope: "<<table->getName()<<std::endl;
 	  return success;
       }
   }
@@ -211,14 +212,14 @@ SemanticVerification::checkVarInsideNest(std::string nest, std::string name, Sym
 	   else
 	   {
 	       success = false;
-	       std::cerr<<"Variable not found in Nest: "<< nest<< "."<< name<<std::endl;
+	       mError<<"Variable not found in Nest: "<< nest<< "."<< name<<std::endl;
 	       return "Variable not found";
 	   }
        }
        else
        {
 	   success = false;
-	   std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+	   mError<<"Use of Variable as a Nest: "<<nest<<std::endl;
 	   return "Not a nest";
        }
 
@@ -226,7 +227,7 @@ SemanticVerification::checkVarInsideNest(std::string nest, std::string name, Sym
    else
    {
        success = false;
-       std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+       mError<<"Use of Nest not Declared: "<<nest<<std::endl;
        return "Variable not found";
    }
 }
@@ -248,7 +249,7 @@ SemanticVerification::checkAmountOfIndices(std::string var, int amount, SymbolTa
       }
       else
       {
-	  //std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+	  //mError<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
 	  std::stringstream ss;
 	  ss<<"array"<< t->getDimensions();
 	  return ss.str();
@@ -257,7 +258,7 @@ SemanticVerification::checkAmountOfIndices(std::string var, int amount, SymbolTa
   else
   {
       success = false;
-      std::cerr<<"Use of Variable not Declared: "<<var<<std::endl;
+      mError<<"Use of Variable not Declared: "<<var<<std::endl;
       return "Variable not found";
   }
 }
@@ -286,7 +287,7 @@ SemanticVerification::checkAmountOfIndicesInNest(std::string nest, std::string v
 	     }
 	     else
 	     {
-		//std::cerr<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
+		//mError<<"Amount of Indices different from variable Declaration: "<<var<<std::endl;
 		 std::stringstream ss;
 		 ss<<"array"<< t->getDimension().size()-amount;
 		 return ss.str();
@@ -295,38 +296,28 @@ SemanticVerification::checkAmountOfIndicesInNest(std::string nest, std::string v
 	 else
 	 {
 	     success = false;
-	     std::cerr<<"Variable not found in Nest: "<< nest<< "."<< var<<std::endl;
+	     mError<<"Variable not found in Nest: "<< nest<< "."<< var<<std::endl;
 	     return "Variable not found";
 	 }
      }
      else
      {
        success = false;
-       std::cerr<<"Use of Variable as a Nest: "<<nest<<std::endl;
+       mError<<"Use of Variable as a Nest: "<<nest<<std::endl;
        return "Not a nest";
      }
   }
   else
   {
        success = false;
-       std::cerr<<"Use of Nest not Declared: "<<nest<<std::endl;
+       mError<<"Use of Nest not Declared: "<<nest<<std::endl;
        return "Variable not found";
   }
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+std::string
+SemanticVerification::getErrors ()
+{
+  return mError.str();
+}

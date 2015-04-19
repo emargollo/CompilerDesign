@@ -52,6 +52,9 @@ Parser::parse (std::string fileName, bool output)
     myfile.open("SymbolTables.txt");
     myfile<<mTableHead->print();
     myfile.close();
+    myfile.open("SemanticErrors.txt");
+    myfile<<mSeV.getErrors();
+    myfile.close();
     myfile.open("MoonCode.txt");
     myfile<<mMoon.getCode();
     myfile.close();
@@ -1174,11 +1177,12 @@ Parser::aParams (std::string id, std::string nest)
   bool success = skipErrors(rule::aParams);
   if(first(rule::expr))
   {
-
-      if(expr(Es, Eid) && aParamsTailx())
+      if(expr(Es, Eid) && aParamsTailx(VSp))
       {
+	  VSp.push_back(Es);
 	  mSs<< "<aParams> -> <expr><aParamsTail*>"<<std::endl;
-
+	  std::reverse(VSp.begin(), VSp.end());
+	  mSeV.checkParameters(id, nest, VSp, mCurrentTable, success);
       }
       else{success = false;}
   }
@@ -1245,15 +1249,16 @@ Parser::fParamsTail ()
 }
 
 bool
-Parser::aParamsTailx ()
+Parser::aParamsTailx (std::vector<std::string>& vs)
 {
+  std::string Es;
   bool success = skipErrors(rule::aParamsTailx);
   if(first(rule::aParamsTail))
   {
-      if(aParamsTail() && aParamsTailx())
+      if(aParamsTail(Es) && aParamsTailx(vs))
       {
       mSs<<"<fParamsTail*> -> <fParamsTail><fParamsTail*> "<<std::endl;
-
+	vs.push_back(Es);
       }
       else{success = false;}
   }
@@ -1267,9 +1272,9 @@ Parser::aParamsTailx ()
 }
 
 bool
-Parser::aParamsTail ()
+Parser::aParamsTail (std::string& Es)
 {
-  std::string Es, Eid;
+  std::string Eid;
   bool success = skipErrors(rule::aParamsTail);
   if(first(Com))
   {

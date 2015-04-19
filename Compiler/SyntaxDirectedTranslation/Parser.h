@@ -13,6 +13,7 @@
 #include "SemanticAction/SemanticTranslation.h"
 #include "SymbolTable.h"
 #include <iostream>
+#include <algorithm>    // std::reverse
 #include <fstream>
 #include <sstream>
 #include <math.h>
@@ -71,6 +72,13 @@ typedef enum Rule_Type
 
 }Rule_Type;
 }
+
+typedef struct Attributes
+{
+  std::string type;
+  std::string nest;
+  std::string id;
+}Attributes;
 
 class Parser
 {
@@ -152,8 +160,8 @@ private:
   bool		aParams(std::string id, std::string nest);
   bool		fParamsTailx();
   bool		fParamsTail();
-  bool		aParamsTailx();
-  bool		aParamsTail();
+  bool		aParamsTailx(std::vector<std::string>& vs);
+  bool		aParamsTail(std::string& Es);
   bool		assignOp();
   bool		relOp(std::string& Op);
   bool		addOp(std::string& Op);

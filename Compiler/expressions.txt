@@ -21,11 +21,5 @@ program {
 	a = a+b*c;
 	a = b + 2;
 	
-	/*for(int t = 0; t<=100 ; t = t + 1)
-	{
-		get(d[t]);
-		d[t] = (d[t] * randomize());
-	};*/
-	
 };
 

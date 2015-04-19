@@ -1,106 +1,297 @@
-Randvar1	res	10080
-Randutility	dw	0
-randomizevalue	dw	0
+Utilityvar1	res	10080
+Utilityvar2	dw	0
+Utility_findMaxmaxValue	dw	0
+Utility_findMaxidx	dw	0
 t1	dw	0
 sub r1,r1,r1
 addi r1,r1,100
 sw t1(r0),r1
+lw r1, (r0)
+sw Utility_findMaxmaxValue(r0),r1
 t2	dw	0
 sub r1,r1,r1
-addi r1,r1,2
+addi r1,r1,99
 sw t2(r0),r1
 t3	dw	0
 sub r1,r1,r1
-addi r1,r1,3
+addi r1,r1,0
 sw t3(r0),r1
 t4	dw	0
 sub r1,r1,r1
-addi r1,r1,7
+addi r1,r1,1
 sw t4(r0),r1
-lw r1,t3(r0)
+lw r1,Utility_findMaxidx(r0)
 lw r2,t4(r0)
-div r3,r1,r2
+sub r3,r1,r2
 t5	dw	0
 sw t5(r0),r3
-lw r1,t2(r0)
-lw r2,t5(r0)
-add r3,r1,r2
+lw r1,t5(r0)
+sw Utility_findMaxidx(r0),r1
+lw r1, (r0)
+sw Utility_findMaxmaxValue(r0),r1
+Utility_findMinminValue	dw	0
+Utility_findMinidx	dw	0
 t6	dw	0
-sw t6(r0),r3
-lw r1,t1(r0)
-lw r2,t6(r0)
-mul r3,r1,r2
+sub r1,r1,r1
+addi r1,r1,100
+sw t6(r0),r1
+lw r1, (r0)
+sw Utility_findMinminValue(r0),r1
 t7	dw	0
-sw t7(r0),r3
-lw r1,t7(r0)
-sw randomizevalue(r0),r1
-t8	dw	0
 sub r1,r1,r1
 addi r1,r1,1
+sw t7(r0),r1
+t8	dw	0
+sub r1,r1,r1
+addi r1,r1,99
 sw t8(r0),r1
 t9	dw	0
 sub r1,r1,r1
-addi r1,r1,2
+addi r1,r1,1
 sw t9(r0),r1
+lw r1,Utility_findMinidx(r0)
+lw r2,t9(r0)
+add r3,r1,r2
 t10	dw	0
-sub r1,r1,r1
-addi r1,r1,2
-sw t10(r0),r1
-lw r1,t9(r0)
-lw r2,t10(r0)
+sw t10(r0),r3
+lw r1,t10(r0)
+sw Utility_findMinidx(r0),r1
+lw r1,Utility_findMinminValue(r0)
+lw r2,Utility_findMinidx(r0)
 mul r3,r1,r2
 t11	dw	0
 sw t11(r0),r3
-t12	dw	0
-sub r1,r1,r1
-addi r1,r1,3
-sw t12(r0),r1
-lw r1,t11(r0)
-lw r2,t12(r0)
+lw r1, (r0)
+lw r2,t11(r0)
 sub r3,r1,r2
+t12	dw	0
+sw t12(r0),r3
+lw r1, (r0)
+sw Utility_findMinminValue(r0),r1
+Randutility	res	10298
+randomizevalue	dw	0
 t13	dw	0
-sw t13(r0),r3
+sub r1,r1,r1
+addi r1,r1,1
+sw t13(r0),r1
+lw r1,t13(r0)
+sw randomizevalue(r0),r1
 t14	dw	0
 sub r1,r1,r1
-addi r1,r1,7
+addi r1,r1,100
 sw t14(r0),r1
-lw r1,t13(r0)
-lw r2,t14(r0)
-add r3,r1,r2
 t15	dw	0
-sw t15(r0),r3
-lw r1,t8(r0)
-lw r2,t15(r0)
-add r3,r1,r2
-t16	dw	0
-sw t16(r0),r3
-lw r1,t16(r0)
-sw randomizevalue(r0),r1
-entry
-Programa	dw	0
-Programb	dw	0
-Programc	dw	0
-Programd	res	15
-lw r1,Programb(r0)
-lw r2,Programc(r0)
-mul r3,r1,r2
-t17	dw	0
-sw t17(r0),r3
-lw r1,Programa(r0)
-lw r2,t17(r0)
-add r3,r1,r2
-t18	dw	0
-sw t18(r0),r3
-lw r1,t18(r0)
-sw Programa(r0),r1
-t19	dw	0
 sub r1,r1,r1
 addi r1,r1,2
-sw t19(r0),r1
-lw r1,Programb(r0)
-lw r2,t19(r0)
+sw t15(r0),r1
+t16	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t16(r0),r1
+t17	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t17(r0),r1
+lw r1,t16(r0)
+lw r2,t17(r0)
+div r3,r1,r2
+t18	dw	0
+sw t18(r0),r3
+lw r1,t15(r0)
+lw r2,t18(r0)
 add r3,r1,r2
+t19	dw	0
+sw t19(r0),r3
+lw r1,t14(r0)
+lw r2,t19(r0)
+mul r3,r1,r2
 t20	dw	0
 sw t20(r0),r3
 lw r1,t20(r0)
-sw Programa(r0),r1
+sw randomizevalue(r0),r1
+t21	dw	0
+sub r1,r1,r1
+addi r1,r1,1
+sw t21(r0),r1
+t22	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t22(r0),r1
+t23	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t23(r0),r1
+lw r1,t22(r0)
+lw r2,t23(r0)
+mul r3,r1,r2
+t24	dw	0
+sw t24(r0),r3
+t25	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t25(r0),r1
+lw r1,t24(r0)
+lw r2,t25(r0)
+sub r3,r1,r2
+t26	dw	0
+sw t26(r0),r3
+t27	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t27(r0),r1
+lw r1,t26(r0)
+lw r2,t27(r0)
+add r3,r1,r2
+t28	dw	0
+sw t28(r0),r3
+lw r1,t21(r0)
+lw r2,t28(r0)
+add r3,r1,r2
+t29	dw	0
+sw t29(r0),r3
+lw r1,t29(r0)
+sw randomizevalue(r0),r1
+randomize2u1	res	10298
+randomize2u2	res	10298
+randomize2value	dw	0
+lw r1,randomize2u2(r0)
+sw randomize2u1(r0),r1
+t30	dw	0
+sub r1,r1,r1
+addi r1,r1,100
+sw t30(r0),r1
+t31	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t31(r0),r1
+t32	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t32(r0),r1
+t33	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t33(r0),r1
+lw r1,t32(r0)
+lw r2,t33(r0)
+div r3,r1,r2
+t34	dw	0
+sw t34(r0),r3
+lw r1,t31(r0)
+lw r2,t34(r0)
+add r3,r1,r2
+t35	dw	0
+sw t35(r0),r3
+lw r1,t30(r0)
+lw r2,t35(r0)
+mul r3,r1,r2
+t36	dw	0
+sw t36(r0),r3
+lw r1,t36(r0)
+sw randomize2value(r0),r1
+t37	dw	0
+sub r1,r1,r1
+addi r1,r1,1
+sw t37(r0),r1
+t38	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t38(r0),r1
+t39	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t39(r0),r1
+lw r1,t38(r0)
+lw r2,t39(r0)
+mul r3,r1,r2
+t40	dw	0
+sw t40(r0),r3
+t41	dw	0
+sub r1,r1,r1
+addi r1,r1,3
+sw t41(r0),r1
+lw r1,t40(r0)
+lw r2,t41(r0)
+sub r3,r1,r2
+t42	dw	0
+sw t42(r0),r3
+t43	dw	0
+sub r1,r1,r1
+addi r1,r1,7
+sw t43(r0),r1
+lw r1,t42(r0)
+lw r2,t43(r0)
+add r3,r1,r2
+t44	dw	0
+sw t44(r0),r3
+lw r1,t37(r0)
+lw r2,t44(r0)
+add r3,r1,r2
+t45	dw	0
+sw t45(r0),r3
+lw r1,t45(r0)
+sw randomize2value(r0),r1
+t46	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t46(r0),r1
+lw r1, (r0)
+sw randomize2value(r0),r1
+entry
+Programsample	res	100
+Programidx	dw	0
+ProgrammaxValue	dw	0
+ProgramminValue	dw	0
+Programutility	res	10298
+Programrand	res	10298
+ProgramarrayUtility	res	10298
+t47	dw	0
+sub r1,r1,r1
+addi r1,r1,1
+sw t47(r0),r1
+t48	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t48(r0),r1
+lw r1,t47(r0)
+lw r2,t48(r0)
+add r3,r1,r2
+t49	dw	0
+sw t49(r0),r3
+lw r1,Programidx(r0)
+sw Programidx(r0),r1
+Programt	dw	0
+t50	dw	0
+sub r1,r1,r1
+addi r1,r1,0
+sw t50(r0),r1
+t51	dw	0
+sub r1,r1,r1
+addi r1,r1,100
+sw t51(r0),r1
+t52	dw	0
+sub r1,r1,r1
+addi r1,r1,1
+sw t52(r0),r1
+lw r1,Programt(r0)
+lw r2,t52(r0)
+add r3,r1,r2
+t53	dw	0
+sw t53(r0),r3
+lw r1,t53(r0)
+sw Programt(r0),r1
+lw r1,Programsample(r0)
+lw r2, (r0)
+mul r3,r1,r2
+t54	dw	0
+sw t54(r0),r3
+lw r1,t54(r0)
+sw Programsample(r0),r1
+lw r1,ProgrammaxValue(r0)
+sw ProgrammaxValue(r0),r1
+t55	dw	0
+sub r1,r1,r1
+addi r1,r1,2
+sw t55(r0),r1
+lw r1,ProgramminValue(r0)
+sw ProgramminValue(r0),r1

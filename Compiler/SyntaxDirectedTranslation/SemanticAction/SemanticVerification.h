@@ -21,7 +21,6 @@ public:
   ~SemanticVerification ();
 
   std::string	checkOperatorTypes(std::string type1, std::string type2, bool& success);
-  std::string	checkAssignmentTypes(std::string type1, std::string type2, bool& success);
   std::string	checkVarType(std::string var, SymbolTable *table, bool& success);
 
   std::string	checkAssigTypes(std::string type1, std::string type2, bool& success);
@@ -40,9 +39,10 @@ public:
 
   bool		checkDoubleDeclaration(std::string name, SymbolTable *table);
 
+  std::string	getErrors();
 
 private:
-
+  std::stringstream mError;
 };
 
 #endif /* SEMANTICVERIFICATION_H_ */
